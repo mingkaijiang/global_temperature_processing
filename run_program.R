@@ -3,22 +3,33 @@
 source("prepare.R")
 
 
-#### read in data
-inName <- "data/ecmwf_sst_1979.nc"
+#### set up the storage DF to store the means, sample size and sd,
+#### at monthly timestep
+meanDF <- create_storage_DF()
+sdDF <- create_storage_DF()
+nDF <- create_storage_DF()
 
-##Project onto right resolution and coordinates
-d <- brick(inName, varname = "sst")
-outDF <- rasterToPoints(d)
-outDF <- as.data.frame(outDF, stringsAsFactors=F)
 
-colnames(outDF) <- c("x", "y", "Jan","Feb","Mar","Apr","May","Jun",
-                     "Jul","Aug","Sep","Oct","Nov","Dec")
+### create the file name list
+dnameDF <- data.frame(rep(c(1979:2018), each=12),
+                      rep(c("jan", "feb", "mar", "apr", "may", "jun",
+                            "jul", "aug", "sep", "oct", "nov", "dec"), by = 40))
+colnames(dnameDF) <- c("year", "month")
+dnameDF$yrmonth <- paste(dnameDF$year, dnameDF$month, sep="_")
+dname.list <- as.vector(dnameDF$yrmonth)
 
-##Save data as excel file
-outName <- inName
-outName <- sub("*\\.nc", ".csv", outName)
-outName <- sub("data/", "output/", outName)
 
-write.csv(outDF, outName,
-          row.names=F) 
+### call in nc file at monthly timestep,
+### calculate monthly mean, sd, and sample size
+for (j in 1:length(dname.list)) {
+    tmp.out <- prepare_monthly_output(dname=dname.list[j])
+    
+    ### assign monthly data onto the summary tables
+    meanDF[,(j+2)] <- tmp.out[,1]
+    sdDF[,(j+2)] <- tmp.out[,2]
+    nDF[,(j+2)] <- tmp.out[,3]
+}
+
+### calculate mean T, sd T based on all data
+TsumDF <- prepare_final_output(meanDF, sdDF, nDF, dname.list)
 

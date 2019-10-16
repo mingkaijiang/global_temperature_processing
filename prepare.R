@@ -10,7 +10,9 @@ pacman::p_load(raster,
                ncdf4,
                spatstat,
                lattice,
-               fields)    
+               fields,
+               matrixStats,
+               RColorBrewer)    
 
 
 #### Sourcing all R files in the modules subdirectory
