@@ -12,7 +12,7 @@ nDF <- create_storage_DF()
 
 
 ### create the file name list
-dnameDF <- data.frame(rep(c(1979:2018), each=12),
+dnameDF <- data.frame(rep(c(1979:1979), each=12),
                       rep(c("jan", "feb", "mar", "apr", "may", "jun",
                             "jul", "aug", "sep", "oct", "nov", "dec"), by = 40))
 colnames(dnameDF) <- c("year", "month")
@@ -32,7 +32,7 @@ for (j in 1:length(dname.list)) {
 }
 
 ### calculate mean T, sd T based on all data to get Tgrowth
-TgrDF <- prepare_final_output(meanDF, sdDF, nDF, dname.list, return.option="annual")
+TgrDF <- prepare_final_output(meanDF, sdDF, nDF, dname.list, return.option="growth")
 
 ### calculate Topt
 TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean

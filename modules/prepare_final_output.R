@@ -44,10 +44,11 @@ prepare_final_output <- function(meanDF, sdDF, nDF, dname.list, return.option) {
         mean.matrix6 <- mean.matrix4 / mean.matrix5
         
         ### calculate overall sd
-        sd.matrix3 <- (n.matrix2 - 1) * (sd.matrix2^2)
-        sd.matrix4 <- rowSums(sd.matrix3, na.rm=T)
-        sd.matrix5 <- rowSums(n.matrix2, na.rm=T) - test2
-        sd.matrix6 <- sqrt(sd.matrix4 / sd.matrix5)
+        #sd.matrix3 <- (n.matrix2 - 1) * (sd.matrix2^2)
+        #sd.matrix4 <- rowSums(sd.matrix3, na.rm=T)
+        #sd.matrix5 <- rowSums(n.matrix2, na.rm=T) - test2
+        #sd.matrix6 <- sqrt(sd.matrix4 / sd.matrix5)
+        sd.matrix6 <- rowSds(mean.matrix, na.rm=T)
         
         
         ### prepare outputDF
@@ -64,11 +65,12 @@ prepare_final_output <- function(meanDF, sdDF, nDF, dname.list, return.option) {
         mean.matrix6 <- mean.matrix4 / mean.matrix5
         
         ### calculate overall sd
-        sd.matrix3 <- (n.matrix - 1) * (sd.matrix^2)
-        sd.matrix4 <- rowSums(sd.matrix3, na.rm=T)
-        sd.matrix5 <- rowSums(n.matrix, na.rm=T) - dim(n.matrix)[2]
-        sd.matrix6 <- sqrt(sd.matrix4 / sd.matrix5)
+        #sd.matrix3 <- (n.matrix - 1) * (sd.matrix^2)
+        #sd.matrix4 <- rowSums(sd.matrix3, na.rm=T)
+        #sd.matrix5 <- rowSums(n.matrix, na.rm=T) - dim(n.matrix)[2]
+        #sd.matrix6 <- sqrt(sd.matrix4 / sd.matrix5)
         
+        sd.matrix6 <- rowSds(mean.matrix, na.rm=T)
         
         ### prepare outputDF
         outDF <- data.frame(meanDF[,c(1:2)], mean.matrix6, sd.matrix6, mean.matrix5)
