@@ -12,7 +12,9 @@ pacman::p_load(raster,
                lattice,
                fields,
                matrixStats,
-               RColorBrewer)    
+               RColorBrewer,
+               ggplot2,
+               cowplot)    
 
 
 #### Sourcing all R files in the modules subdirectory

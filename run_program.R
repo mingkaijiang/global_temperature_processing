@@ -1,5 +1,6 @@
 ### Generate global gridded temperature profile 
-#### source
+
+#### source all necessary files
 source("prepare.R")
 
 
@@ -30,6 +31,16 @@ for (j in 1:length(dname.list)) {
     nDF[,(j+2)] <- tmp.out[,3]
 }
 
-### calculate mean T, sd T based on all data
-TsumDF <- prepare_final_output(meanDF, sdDF, nDF, dname.list)
+### calculate mean T, sd T based on all data to get Tgrowth
+TgrDF <- prepare_final_output(meanDF, sdDF, nDF, dname.list, return.option="annual")
+
+### calculate Topt
+TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+
+### test statistics
+TgrDF$stats <- with(TgrDF, T_opt - T_mean / T_sd)
+
+
+### prepare global maps for Tgrowth
+prepare_map_output(TgrDF)
 
