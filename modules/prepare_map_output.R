@@ -1,6 +1,6 @@
-prepare_map_output <- function(TgrDF) {
+prepare_map_output <- function(landDF) {
     
-    plotDF <- TgrDF
+    plotDF <- landDF
     plotDF$stats <- ifelse(plotDF$stats <=0, 0, plotDF$stats)
     #plotDF$stats2 <- ifelse(plotDF$stats <= 0, 0, ifelse(plotDF$stats > 0 & plotDF$stats <= 10, 10,
     #                        ifelse(plotDF$stats > 10 & plotDF$stats <= 20, 20, ifelse(plotDF$stats > 20, 30, 0))))

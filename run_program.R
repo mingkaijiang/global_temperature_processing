@@ -41,6 +41,15 @@ TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
 TgrDF$stats <- with(TgrDF, T_opt - T_mean / T_sd)
 
 
+### prepare sea surface area mask
+ssfDF <- read_sea_surface_mask()
+
+### merge ssf and TgrDF
+mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
+
+### subtract only land
+landDF <- mgDF[is.na(mgDF$ssf),]
+
 ### prepare global maps for Tgrowth
-prepare_map_output(TgrDF)
+prepare_map_output(landDF)
 
