@@ -39,3 +39,5 @@ rsconnect/
 *.DS_Store
 *.csv
 *.pdf
+*.tiff
+*.docx

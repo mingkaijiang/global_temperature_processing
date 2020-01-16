@@ -38,7 +38,7 @@ TgrDF <- prepare_final_output(meanDF, sdDF, nDF, dname.list, return.option="grow
 TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
 
 ### test statistics
-TgrDF$stats <- with(TgrDF, T_opt - T_mean / T_sd)
+TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
 
 
 ### prepare sea surface area mask
