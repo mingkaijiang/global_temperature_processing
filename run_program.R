@@ -1,4 +1,10 @@
-### Generate global gridded temperature profile 
+############### Generate global gridded temperature profile to investigate
+############### the universal parameter
+###############
+############### code developed by: Mingkai Jiang (m.jiang@westernsydney.edu.au)
+
+#### clear wk space
+rm(list=ls(all=TRUE))
 
 #### source all necessary files
 source("prepare.R")
@@ -12,7 +18,7 @@ nDF <- create_storage_DF()
 
 
 ### create the file name list
-dnameDF <- data.frame(rep(c(1979:1979), each=12),
+dnameDF <- data.frame(rep(c(1979:1980), each=12),
                       rep(c("jan", "feb", "mar", "apr", "may", "jun",
                             "jul", "aug", "sep", "oct", "nov", "dec"), by = 40))
 colnames(dnameDF) <- c("year", "month")
@@ -31,8 +37,12 @@ for (j in 1:length(dname.list)) {
     nDF[,(j+2)] <- tmp.out[,3]
 }
 
+### prepare annualDF to store data at annual timestep
+annDF <- meanDF[,c(1:2)]
+
+
 ### calculate mean T, sd T based on all data to get Tgrowth
-TgrDF <- prepare_final_output(meanDF, sdDF, nDF, dname.list, return.option="growth")
+TgrDF <- prepare_final_output(meanDF, sdDF, nDF, annDF, dname.list, return.option="annual")
 
 ### calculate Topt
 TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean

@@ -1,4 +1,5 @@
-prepare_final_output <- function(meanDF, sdDF, nDF, dname.list, return.option) {
+prepare_final_output <- function(meanDF, sdDF, nDF, annDF, 
+                                 dname.list, return.option) {
     
     ### set colnames for the summaryDFs
     colnames(meanDF) <- c("lon", "lat", paste0("m_", dname.list))
@@ -19,64 +20,42 @@ prepare_final_output <- function(meanDF, sdDF, nDF, dname.list, return.option) {
     ### convert unit from K to C
     mean.matrix <- mean.matrix - 273.15
     
+    
+    ### get matrix dimension information to guess number of years of data included
+    n.yr <- dim(mean.matrix)[2]/12
+    
+    
     if (return.option == "growth") {
         ### calculate growth temperature as months when T > 0
         
-        ### ignore months with T < 0
-        mean.matrix2 <- ifelse(mean.matrix >=0, mean.matrix, "")
-        mean.matrix2 <- apply(mean.matrix2, 2, as.numeric)
+        ### subset each year
+        for (i in 1:n.yr) {
+            tmpDF <- mean.matrix[,(1+12*(i-1)):(12*i)]
+            
+            tmpDF2 <- ifelse(tmpDF >=0, tmpDF, "")
+            tmpDF2 <- apply(tmpDF2, 2, as.numeric)
+            
+            ann.meanDF <- rowMeans(tmpDF2)
+            annDF[,2+i] <- ann.meanDF
+        }
         
-        sd.matrix2 <- ifelse(mean.matrix >=0, sd.matrix, "")
-        sd.matrix2 <- apply(sd.matrix2, 2, as.numeric)
-        
-        n.matrix2 <- ifelse(mean.matrix >=0, n.matrix, "")
-        n.matrix2 <- apply(n.matrix2, 2, as.numeric)
-        
-        ### count number of columns where values are present for each row 
-        test <- ifelse(n.matrix2 >= 0, 1, 0)
-        test <- apply(test, 2, as.numeric)
-        test2 <- rowCounts(test, value = 1, na.rm=T)
-        
-        ### calculate overall mean
-        mean.matrix3 <- mean.matrix2 * n.matrix2
-        mean.matrix4 <- rowSums(mean.matrix3, na.rm=T)
-        mean.matrix5 <- rowSums(n.matrix2, na.rm=T)
-        mean.matrix6 <- mean.matrix4 / mean.matrix5
-        
-        ### calculate overall sd
-        #sd.matrix3 <- (n.matrix2 - 1) * (sd.matrix2^2)
-        #sd.matrix4 <- rowSums(sd.matrix3, na.rm=T)
-        #sd.matrix5 <- rowSums(n.matrix2, na.rm=T) - test2
-        #sd.matrix6 <- sqrt(sd.matrix4 / sd.matrix5)
-        sd.matrix6 <- rowSds(mean.matrix, na.rm=T)
-        
-        
-        ### prepare outputDF
-        outDF <- data.frame(meanDF[,c(1:2)], mean.matrix6, sd.matrix6, mean.matrix5)
-        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
         
     } else if (return.option == "annual") {
-        ### return annual mean T
+        ### return annual mean T for each year
         
-        ### calculate overall mean
-        mean.matrix3 <- mean.matrix * n.matrix
-        mean.matrix4 <- rowSums(mean.matrix3, na.rm=T)
-        mean.matrix5 <- rowSums(n.matrix, na.rm=T)
-        mean.matrix6 <- mean.matrix4 / mean.matrix5
-        
-        ### calculate overall sd
-        #sd.matrix3 <- (n.matrix - 1) * (sd.matrix^2)
-        #sd.matrix4 <- rowSums(sd.matrix3, na.rm=T)
-        #sd.matrix5 <- rowSums(n.matrix, na.rm=T) - dim(n.matrix)[2]
-        #sd.matrix6 <- sqrt(sd.matrix4 / sd.matrix5)
-        
-        sd.matrix6 <- rowSds(mean.matrix, na.rm=T)
-        
-        ### prepare outputDF
-        outDF <- data.frame(meanDF[,c(1:2)], mean.matrix6, sd.matrix6, mean.matrix5)
-        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
+        ### subset each year
+        for (i in 1:n.yr) {
+            tmpDF <- mean.matrix[,(1+12*(i-1)):(12*i)]
+            ann.meanDF <- rowMeans(tmpDF)
+            annDF[,2+i] <- ann.meanDF
+        }
     }
     
+    ann.meanDF <- rowMeans(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
+    ann.stdevDF <- rowSds(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
+
+    outDF <- data.frame(annDF[,c(1:2)], ann.meanDF, ann.stdevDF, n.yr)
+    colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
     
     
     ### write csv
