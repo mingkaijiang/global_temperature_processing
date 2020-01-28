@@ -42,7 +42,7 @@ annDF <- meanDF[,c(1:2)]
 
 
 ### calculate mean T, sd T based on all data to get Tgrowth
-TgrDF <- prepare_final_output(meanDF, sdDF, nDF, annDF, dname.list, return.option="annual")
+TgrDF <- prepare_final_output(meanDF, sdDF, nDF, annDF, dname.list, return.option="growth")
 
 ### calculate Topt
 TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean

@@ -28,7 +28,7 @@ read_sea_surface_mask <- function() {
     tmpDF <- data.frame(cbind(lonlat,tmp_vec))
     names(tmpDF) <- c("lon","lat","ssf")
     
-    tmpDF$ssf <- 1
+    tmpDF$ssf <- ifelse(tmpDF$ssf > 0, 1, 0)
     
     ### close the nc
     nc_close(nc)
