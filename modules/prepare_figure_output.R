@@ -246,9 +246,43 @@ prepare_figure_output <- function(landDF) {
         scale_y_continuous(name="Density")
     
     
+    p9 <- ggplot(plotDF, aes(x=lat, y=T_sd)) + 
+        geom_bin2d(bins=100) +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=12),
+              panel.grid.major=element_blank(),
+              plot.title = element_text(size = 10, face = "bold"))+
+        scale_fill_continuous(type = "viridis") +
+        scale_x_continuous("Latitude")+
+        scale_y_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))
+    
+
+    p10 <- ggplot(plotDF, aes(x=lat, y=stats)) + 
+        geom_bin2d(bins=100) +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=12),
+              panel.grid.major=element_blank(),
+              plot.title = element_text(size = 10, face = "bold"))+
+        scale_x_continuous("Latitude")+
+        scale_fill_continuous(type = "viridis") +
+        scale_y_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))
+    
+    plot(p10)
+    
+    
     pdf("output/T_density_plots.pdf", width=12,height=12)
-    plot_grid(p5, p6, p7, p8,
-              labels=c("(a)", "(b)", "(c)", "(d)"), ncol=2, align="h", axis = "l")
+    plot_grid(p5, p6, p7, p8, p9, p10,
+              labels=c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"), ncol=2, align="h", axis = "l")
     dev.off()
     
 }
