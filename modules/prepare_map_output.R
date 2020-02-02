@@ -86,7 +86,7 @@ prepare_map_output <- function(landDF) {
     
     #plot(p4)
     
-    pdf("output/Topt_maps_based_on_Tmean2.pdf", width=12,height=16)
+    pdf("output/Topt_maps_based_on_Tmean.pdf", width=12,height=16)
     plot_grid(p1, p2, p3, p4,
               labels=c(""), ncol=1, align="h", axis = "l")
     dev.off()
