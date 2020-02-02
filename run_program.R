@@ -61,5 +61,5 @@ mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
 landDF <- mgDF[is.na(mgDF$ssf),]
 
 ### prepare global maps for Tgrowth
-prepare_map_output(landDF)
+prepare_figure_output(landDF)
 

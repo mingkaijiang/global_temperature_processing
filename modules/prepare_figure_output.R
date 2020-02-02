@@ -1,11 +1,16 @@
-prepare_map_output <- function(landDF) {
+prepare_figure_output <- function(landDF) {
     
+    
+    ########################### some modification to the dataset
     ### make a new DF
     plotDF <- landDF
     
     ### delete unreasonably small T sd
     plotDF$stats <- ifelse(plotDF$stats >= 49, 49, plotDF$stats)
     
+    
+    
+    ########################### prepare map output
     ### delete antarctica
     plotDF <- plotDF[plotDF$lat > -62, ]
     
@@ -65,7 +70,7 @@ prepare_map_output <- function(landDF) {
     p1 <- ggplot() + 
         geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_mean2)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[growth] * " " * degree * "C"), 
+        scale_fill_manual(name=expression(T[growth] * " (" * degree * "C" * ")"), 
                           values=col1,
                           label=col.lab1)+
         theme(panel.grid.minor=element_blank(),
@@ -87,7 +92,7 @@ prepare_map_output <- function(landDF) {
     p2 <- ggplot() + 
         geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_sd2)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[sd] * " " * degree * "C"), 
+        scale_fill_manual(name=expression(T[sd] * " (" * degree * "C" * ")"), 
                           values=col2,
                           label=col.lab2)+
         theme(panel.grid.minor=element_blank(),
@@ -110,7 +115,7 @@ prepare_map_output <- function(landDF) {
     p3 <- ggplot() + 
         geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_opt2)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[opt] * " " * degree * "C"), 
+        scale_fill_manual(name=expression(T[opt] * " (" * degree * "C" * ")"), 
                           values=col3,
                           label=col.lab3)+
         theme(panel.grid.minor=element_blank(),
@@ -170,7 +175,80 @@ prepare_map_output <- function(landDF) {
     
     pdf("output/Topt_maps_based_on_Tmean.pdf", width=12,height=16)
     plot_grid(p1, p2, p3, p4,
-              labels=c(""), ncol=1, align="h", axis = "l")
+              labels=c("(a)", "(b)", "(c)", "(d)"), ncol=1, align="h", axis = "l")
+    dev.off()
+    
+    
+    ########################### prepare density plots
+    ### prepare cos(latitude) to weight the responses
+    plotDF$T_sd_weighted <- plotDF$T_sd / cos(plotDF$lat)
+    plotDF$stats_weighted <- plotDF$stats / cos(plotDF$lat)
+    
+    
+    ### plotting
+    p5 <- ggplot(plotDF, aes(x=T_sd)) + 
+        geom_density(fill="grey")+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=12),
+              panel.grid.major=element_blank(),
+              plot.title = element_text(size = 10, face = "bold"))+
+        scale_x_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))+
+        scale_y_continuous(name="Density")
+    
+    
+    p6 <- ggplot(plotDF, aes(x=stats)) + 
+        geom_density(fill="grey")+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=12),
+              panel.grid.major=element_blank(),
+              plot.title = element_text(size = 10, face = "bold"))+
+        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))+
+        scale_y_continuous(name="Density")
+    
+    
+    p7 <- ggplot(plotDF, aes(x=T_sd_weighted)) + 
+        geom_density(fill="grey")+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=12),
+              panel.grid.major=element_blank(),
+              plot.title = element_text(size = 10, face = "bold"))+
+        scale_x_continuous(name=expression(T[sd] * " weighted by cos (latitude)"))+
+        scale_y_continuous(name="Density")
+    
+    
+    p8 <- ggplot(plotDF, aes(x=stats_weighted)) + 
+        geom_density(fill="grey")+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=12),
+              panel.grid.major=element_blank(),
+              plot.title = element_text(size = 10, face = "bold"))+
+        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd] * " weighted by cos (latitude)"))+
+        scale_y_continuous(name="Density")
+    
+    
+    pdf("output/T_density_plots.pdf", width=12,height=12)
+    plot_grid(p5, p6, p7, p8,
+              labels=c("(a)", "(b)", "(c)", "(d)"), ncol=2, align="h", axis = "l")
     dev.off()
     
 }
