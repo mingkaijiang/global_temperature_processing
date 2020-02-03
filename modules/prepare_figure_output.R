@@ -6,8 +6,7 @@ prepare_figure_output <- function(landDF) {
     plotDF <- landDF
     
     ### delete unreasonably small T sd
-    plotDF$stats <- ifelse(plotDF$stats >= 49, 49, plotDF$stats)
-    
+    plotDF <- plotDF[plotDF$T_sd >= 0.05, ]
     
     
     ########################### prepare map output
@@ -42,7 +41,8 @@ prepare_figure_output <- function(landDF) {
     ### make categorical ploting scheme
     plotDF$stats2 <- ifelse(plotDF$stats <= 10, "a", 
                             ifelse(plotDF$stats > 10 & plotDF$stats <= 20, "b",
-                                   ifelse(plotDF$stats > 20 & plotDF$stats <= 30, "c", "d")))
+                                   ifelse(plotDF$stats > 20 & plotDF$stats <= 30, "c", 
+                                          ifelse(plotDF$stats > 30 & plotDF$stats <= 40, "d", "e"))))
     
     
     ### set up plotting color discrete 
@@ -51,20 +51,16 @@ prepare_figure_output <- function(landDF) {
                   "-10 to 0", "0 to 10", "10 to 20", "20 to 30", "> 30")
     
     col2 <- brewer.pal(n = 6, name = "OrRd")
-    col.lab2 <- c("0 to 0.5", "0.5 to 1.0", 
+    col.lab2 <- c("0.05 to 0.5", "0.5 to 1.0", 
                   "1.0 to 1.5", "1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0")
     
     col3 <- brewer.pal(n = 5, name = "YlGn")
     col.lab3 <- c("< 0.0", "0 to 10", 
                   "10 to 20", "20 to 30", "> 30")
-    
-    require(viridis)
-    require(scales)
-    #show_col(viridis_pal()(4))
-    #col4 <- c("#440154FF", "#31688EFF", "#35B779FF", "#FDE725FF")
-    col4 <- brewer.pal(n = 4, name = "Blues")
-    col.lab4 <- c("< 10", "10 to 20", 
-                  "20 to 30", "> 30")
+
+    col4 <- brewer.pal(n = 5, name = "Blues")
+    col.lab4 <- c("0 to 10", "10 to 20", "20 to 30", 
+                  "30 to 40", "> 40")
 
     ### plot T growth mean
     p1 <- ggplot() + 
@@ -79,7 +75,7 @@ prepare_figure_output <- function(landDF) {
               axis.text.y=element_text(size=10),
               axis.title.y=element_text(size=10),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=12),
+              legend.title=element_text(size=14),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
               legend.position="right")+
@@ -101,7 +97,7 @@ prepare_figure_output <- function(landDF) {
               axis.text.y=element_text(size=10),
               axis.title.y=element_text(size=10),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=12),
+              legend.title=element_text(size=14),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
               legend.position="right")+
@@ -124,7 +120,7 @@ prepare_figure_output <- function(landDF) {
               axis.text.y=element_text(size=10),
               axis.title.y=element_text(size=10),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=12),
+              legend.title=element_text(size=14),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
               legend.position="right")+
@@ -147,7 +143,7 @@ prepare_figure_output <- function(landDF) {
               axis.text.y=element_text(size=10),
               axis.title.y=element_text(size=10),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=12),
+              legend.title=element_text(size=14),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
               legend.position="right")+
@@ -277,7 +273,7 @@ prepare_figure_output <- function(landDF) {
         scale_fill_continuous(type = "viridis") +
         scale_y_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))
     
-    plot(p10)
+    #plot(p10)
     
     
     pdf("output/T_density_plots.pdf", width=12,height=12)

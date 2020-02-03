@@ -27,7 +27,7 @@ dname.list <- as.vector(dnameDF$yrmonth)
 
 
 ### call in nc file at monthly timestep,
-### calculate monthly mean, sd, and sample size
+### calculate monthly temperature mean, sd, and sample size
 for (j in 1:length(dname.list)) {
     tmp.out <- prepare_monthly_output(dname=dname.list[j])
     
@@ -42,7 +42,7 @@ annDF <- meanDF[,c(1:2)]
 
 
 ### calculate mean T, sd T based on all data to get Tgrowth
-TgrDF <- prepare_final_output(meanDF, sdDF, nDF, annDF, dname.list, return.option="annual")
+TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, return.option="annual")
 
 ### calculate Topt
 TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean

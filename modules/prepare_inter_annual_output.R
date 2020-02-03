@@ -1,5 +1,5 @@
-prepare_final_output <- function(meanDF, sdDF, nDF, annDF, 
-                                 dname.list, return.option) {
+prepare_inter_annual_output <- function(meanDF, sdDF, nDF, annDF, 
+                                        dname.list, return.option) {
     
     ### set colnames for the summaryDFs
     colnames(meanDF) <- c("lon", "lat", paste0("m_", dname.list))
@@ -8,8 +8,8 @@ prepare_final_output <- function(meanDF, sdDF, nDF, annDF,
     
     ### save monthly mean, sd and sample size csv
     write.csv(meanDF, "output/monthly_mean.csv", row.names=F)
-    write.csv(sdDF, "output/monthly_sd.csv", row.names=F)
-    write.csv(nDF, "output/monthly_sample_size.csv", row.names=F)
+    #write.csv(sdDF, "output/monthly_sd.csv", row.names=F)
+    #write.csv(nDF, "output/monthly_sample_size.csv", row.names=F)
     
     
     ### prepare data to calculate overall mean, sds
@@ -21,10 +21,13 @@ prepare_final_output <- function(meanDF, sdDF, nDF, annDF,
     mean.matrix <- mean.matrix - 273.15
     
     
-    ### get matrix dimension information to guess number of years of data included
+    ### get matrix dimension information to check number of years of data included
     n.yr <- dim(mean.matrix)[2]/12
     
     
+    ### now we have two return options:
+    ### either calculate growth temperature, that is, mean temperature of months when T > 0 
+    ### or, calculate annual mean temperature
     if (return.option == "growth") {
         ### calculate growth temperature as months when T > 0
         
@@ -35,7 +38,7 @@ prepare_final_output <- function(meanDF, sdDF, nDF, annDF,
             tmpDF2 <- ifelse(tmpDF >=0, tmpDF, "")
             tmpDF2 <- apply(tmpDF2, 2, as.numeric)
             
-            ann.meanDF <- rowMeans(tmpDF2)
+            ann.meanDF <- rowMeans(tmpDF2, na.rm=T)
             annDF[,2+i] <- ann.meanDF
         }
         
@@ -46,7 +49,11 @@ prepare_final_output <- function(meanDF, sdDF, nDF, annDF,
         ### subset each year
         for (i in 1:n.yr) {
             tmpDF <- mean.matrix[,(1+12*(i-1)):(12*i)]
-            ann.meanDF <- rowMeans(tmpDF)
+            
+            ### calculate annual T based on monthly T
+            ann.meanDF <- rowMeans(tmpDF, na.rm=T)
+            
+            ### assign to output df
             annDF[,2+i] <- ann.meanDF
         }
     }
