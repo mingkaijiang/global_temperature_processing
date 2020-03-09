@@ -20,7 +20,6 @@ source("prepare.R")
 
 ### Do all four and check robustness of the results
 
-#################### Approach 1: annual mean temperature
 ####
 #### set up the storage DF to store the means, sample size and sd,
 #### at monthly timestep
@@ -55,6 +54,7 @@ annDF <- meanDF[,c(1:2)]
 ### prepare sea surface area mask
 ssfDF <- read_sea_surface_mask()
 
+#################### Approach 1: annual mean temperature
 ### calculate mean T, sd T based on all data to get Tgrowth
 TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
                                      return.option="annual")
@@ -77,7 +77,7 @@ landDF <- mgDF[is.na(mgDF$ssf),]
 prepare_figure_output_A1(landDF)
 
 
-#################### Approach 2: monthly mean T > 0 C
+#################### Approach 2: Annual mean with monthly mean T > 0 C
 
 ### calculate mean T, sd T based on all data to get Tgrowth
 TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
@@ -101,3 +101,24 @@ landDF <- mgDF[is.na(mgDF$ssf),]
 prepare_figure_output_A2(landDF)
 
 
+#################### Approach 2: Intra-annual variation with all data
+### calculate mean T, sd T based on all data to get Tgrowth
+TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
+                                     return.option="annual")
+
+### calculate Topt
+TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+
+### test statistics
+TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
+
+
+### merge ssf and TgrDF
+mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
+
+### subtract only land
+landDF <- mgDF[is.na(mgDF$ssf),]
+
+### prepare global maps, A3 method
+### need to go into the function to make the plot
+prepare_figure_output_A3(landDF)
