@@ -29,21 +29,14 @@ prepare_intra_annual_output <- function(meanDF, sdDF, nDF, annDF,
     if (return.option == "growth") {
         ### calculate growth temperature as months when T > 0
         
-        ### subset each year
-        for (i in 1:n.yr) {
-            tmpDF <- mean.matrix[,(1+12*(i-1)):(12*i)]
-            
-            tmpDF2 <- ifelse(tmpDF >=0, tmpDF, "")
-            tmpDF2 <- apply(tmpDF2, 2, as.numeric)
-            
-            ann.meanDF <- rowMeans(tmpDF2, na.rm=T)
-            annDF[,2+i] <- ann.meanDF
-        }
         
-        ann.meanDF <- rowMeans(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
-        ann.stdevDF <- rowSds(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
+        tmpDF2 <- ifelse(mean.matrix >=0, mean.matrix, "")
+        tmpDF2 <- apply(tmpDF2, 2, as.numeric)
         
-        outDF <- data.frame(annDF[,c(1:2)], ann.meanDF, ann.stdevDF, n.yr)
+        annDF$T_mean <- rowMeans(tmpDF2, na.rm=T)
+        annDF$T_sd <- rowSds(tmpDF2, na.rm=T)
+        
+        outDF <- data.frame(annDF[,c(1:4)], n.yr)
         colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
         
         
