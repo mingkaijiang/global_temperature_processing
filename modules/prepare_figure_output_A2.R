@@ -5,8 +5,10 @@ prepare_figure_output_A2 <- function(landDF) {
     ### make a new DF
     plotDF <- landDF
     
+    plotDF2 <- plotDF[!is.na(plotDF$T_sd),]
+    
     ### delete unreasonably small T sd
-    plotDF <- plotDF[plotDF$T_sd >= 0.05, ]
+    plotDF <- plotDF2[plotDF2$T_sd >= 0.05, ]
     
     
     ########################### prepare map output
@@ -18,25 +20,20 @@ prepare_figure_output_A2 <- function(landDF) {
     
     
     ### create categorical plotting labels for each plotting variables
-    plotDF$T_mean2 <- ifelse(plotDF$T_mean <= -20, "a", 
-                             ifelse(plotDF$T_mean > -20 & plotDF$T_mean <= -10, "b",
-                                    ifelse(plotDF$T_mean > -10 & plotDF$T_mean <= 0, "c", 
-                                           ifelse(plotDF$T_mean > 0 & plotDF$T_mean <= 10, "d", 
-                                                  ifelse(plotDF$T_mean > 10 & plotDF$T_mean <= 20, "e",
-                                                         ifelse(plotDF$T_mean > 20 & plotDF$T_mean <= 30, "f", "g"))))))
+    plotDF$T_mean2 <- ifelse(plotDF$T_mean <= 10, "a", 
+                             ifelse(plotDF$T_mean > 10 & plotDF$T_mean <= 20, "b",
+                                    ifelse(plotDF$T_mean > 20 & plotDF$T_mean <= 30, "c", "d")))
     
     
     plotDF$T_sd2 <- ifelse(plotDF$T_sd <= 0.5, "a", 
                              ifelse(plotDF$T_sd > 0.5 & plotDF$T_sd <= 1, "b",
                                     ifelse(plotDF$T_sd > 1 & plotDF$T_sd <= 1.5, "c", 
-                                           ifelse(plotDF$T_sd > 1.5 & plotDF$T_sd <= 2, "d", 
-                                                  ifelse(plotDF$T_sd > 2.5 & plotDF$T_sd <= 3, "e", "f")))))
+                                           ifelse(plotDF$T_sd > 1.5 & plotDF$T_sd <= 2, "d", "e"))))
     
     
-    plotDF$T_opt2 <- ifelse(plotDF$T_opt <= 0.0, "a", 
-                           ifelse(plotDF$T_opt > 0.0 & plotDF$T_opt <=10, "b",
-                                  ifelse(plotDF$T_opt > 10 & plotDF$T_opt <= 20, "c", 
-                                         ifelse(plotDF$T_opt > 20 & plotDF$T_opt <= 30, "d",  "e"))))
+    plotDF$T_opt2 <- ifelse(plotDF$T_opt <= 10.0, "a", 
+                            ifelse(plotDF$T_opt > 10 & plotDF$T_opt <= 20, "b", 
+                                   ifelse(plotDF$T_opt > 20 & plotDF$T_opt <= 30, "c",  "d")))
     
     ### make categorical ploting scheme
     plotDF$stats2 <- ifelse(plotDF$stats <= 10, "a", 
@@ -58,16 +55,15 @@ prepare_figure_output_A2 <- function(landDF) {
     
     
     ### set up plotting color discrete 
-    col1 <- rev(brewer.pal(n = 7, name = "RdBu"))
-    col.lab1 <- c("< -20", "-20 to -10", 
-                  "-10 to 0", "0 to 10", "10 to 20", "20 to 30", "> 30")
+    col1 <- rev(brewer.pal(n = 4, name = "RdBu"))
+    col.lab1 <- c("0 to 10", "10 to 20", "20 to 30", "> 30")
     
-    col2 <- brewer.pal(n = 6, name = "OrRd")
+    col2 <- brewer.pal(n = 5, name = "OrRd")
     col.lab2 <- c("0.05 to 0.5", "0.5 to 1.0", 
-                  "1.0 to 1.5", "1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0")
+                  "1.0 to 1.5", "1.5 to 2.0", "2.0 to 2.5")
     
-    col3 <- brewer.pal(n = 5, name = "YlGn")
-    col.lab3 <- c("< 0.0", "0 to 10", 
+    col3 <- brewer.pal(n = 4, name = "YlGn")
+    col.lab3 <- c("0 to 10", 
                   "10 to 20", "20 to 30", "> 30")
 
     col4 <- brewer.pal(n = 5, name = "Blues")

@@ -146,7 +146,7 @@ prepare_figure_output_A1 <- function(landDF) {
     p4 <- ggplot() + 
         geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=stats2)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]), 
+        scale_fill_manual(name=expression("(" * T[opt] * " - " * T[ann] * ")/" * T[sd]), 
                           values=col4,
                           label=col.lab4)+
         #scale_fill_gradient(low = "black", high = "steelblue")+
@@ -224,7 +224,7 @@ prepare_figure_output_A1 <- function(landDF) {
               legend.title=element_text(size=12),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"))+
-        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))+
+        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[ann] * ")/" * T[sd]))+
         scale_y_continuous(name="Density")
     
     
@@ -254,7 +254,7 @@ prepare_figure_output_A1 <- function(landDF) {
               legend.title=element_text(size=12),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"))+
-        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd] * " weighted by cos (latitude)"))+
+        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[ann] * ")/" * T[sd] * " weighted by cos (latitude)"))+
         scale_y_continuous(name="Density")
     
     
@@ -287,7 +287,7 @@ prepare_figure_output_A1 <- function(landDF) {
               plot.title = element_text(size = 10, face = "bold"))+
         scale_x_continuous("Latitude")+
         scale_fill_continuous(type = "viridis") +
-        scale_y_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))
+        scale_y_continuous(name=expression("(" * T[opt] * " - " * T[ann] * ")/" * T[sd]))
     
     #plot(p10)
     
