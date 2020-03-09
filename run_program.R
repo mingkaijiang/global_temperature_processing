@@ -57,37 +57,16 @@ ssfDF <- read_sea_surface_mask()
 
 
 
-#################### Approach 1: annual mean temperature
-### calculate mean T, sd T based on all data to get Tgrowth
-TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
-                                     return.option="annual")
-
-### calculate Topt
-TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-
-### test statistics
-TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-
-
-### merge ssf and TgrDF
-mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-
-### subtract only land
-landDF <- mgDF[is.na(mgDF$ssf),]
-
-### prepare global maps, A1 method
-### need to go into the function to make the plot
-prepare_figure_output_A1(landDF)
-
-
 #################### Approach 2: Annual mean with monthly mean T > 0 C
-
 ### calculate mean T, sd T based on all data to get Tgrowth
 TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
                                      return.option="growth")
 
 ### calculate Topt
 TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+
+### prepare a Topt DF for the following approaches
+ToptDF1 <- TgrDF[,c("lon", "lat", "T_opt")]
 
 ### test statistics
 TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
@@ -104,13 +83,67 @@ landDF <- mgDF[is.na(mgDF$ssf),]
 prepare_figure_output_A2(landDF)
 
 
+
+#################### Approach 1: annual mean temperature
+### calculate mean T, sd T based on all data to get Tgrowth
+TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
+                                     return.option="annual")
+
+### calculate Topt
+#TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+TgrDF$T_opt <- ToptDF1$T_opt
+
+### test statistics
+TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
+
+
+### merge ssf and TgrDF
+mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
+
+### subtract only land
+landDF <- mgDF[is.na(mgDF$ssf),]
+
+### prepare global maps, A1 method
+### need to go into the function to make the plot
+prepare_figure_output_A1(landDF)
+
+
+
+#################### Approach 4: Monthly mean with monthly mean T > 0 C
+### calculate mean T, sd T based on all data to get Tgrowth
+TgrDF <- prepare_intra_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
+                                     return.option="growth")
+
+### calculate Topt
+TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+
+### prepare a Topt DF for the following approaches
+ToptDF2 <- TgrDF[,c("lon", "lat", "T_opt")]
+
+### test statistics
+TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
+
+
+### merge ssf and TgrDF
+mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
+
+### subtract only land
+landDF <- mgDF[is.na(mgDF$ssf),]
+
+### prepare global maps, A4 method
+### need to go into the function to make the plot
+prepare_figure_output_A4(landDF)
+
+
 #################### Approach 3: Intra-annual variation with all data
 ### calculate mean T, sd T based on all data to get Tgrowth
 TgrDF <- prepare_intra_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
                                      return.option="annual")
 
 ### calculate Topt
-TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+#TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+TgrDF$T_opt <- ToptDF2$T_opt
+
 
 ### test statistics
 TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
@@ -127,25 +160,3 @@ landDF <- mgDF[is.na(mgDF$ssf),]
 prepare_figure_output_A3(landDF)
 
 
-#################### Approach 4: Monthly mean with monthly mean T > 0 C
-
-### calculate mean T, sd T based on all data to get Tgrowth
-TgrDF <- prepare_intra_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
-                                     return.option="growth")
-
-### calculate Topt
-TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-
-### test statistics
-TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-
-
-### merge ssf and TgrDF
-mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-
-### subtract only land
-landDF <- mgDF[is.na(mgDF$ssf),]
-
-### prepare global maps, A4 method
-### need to go into the function to make the plot
-prepare_figure_output_A4(landDF)

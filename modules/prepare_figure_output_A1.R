@@ -5,8 +5,10 @@ prepare_figure_output_A1 <- function(landDF) {
     ### make a new DF
     plotDF <- landDF
     
+    plotDF2 <- plotDF[!is.na(plotDF$stats),]
+    
     ### delete unreasonably small T sd
-    plotDF <- plotDF[plotDF$T_sd >= 0.05, ]
+    plotDF <- plotDF2[plotDF2$T_sd >= 0.05, ]
     
     
     ########################### prepare map output
