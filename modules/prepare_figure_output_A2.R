@@ -1,4 +1,4 @@
-prepare_figure_output <- function(landDF, approach) {
+prepare_figure_output_A2 <- function(landDF) {
     
     
     ########################### some modification to the dataset
@@ -185,7 +185,7 @@ prepare_figure_output <- function(landDF, approach) {
     #       units = "mm",
     #       dpi = 300)
     
-    pdf("output/Topt_maps_based_on_Tmean.pdf", width=12,height=16)
+    pdf("output/Maps_A2.pdf", width=12,height=16)
     plot_grid(p1, p2, p3, p4,
               labels=c("(a)", "(b)", "(c)", "(d)"), ncol=1, align="h", axis = "l")
     dev.off()
@@ -292,7 +292,7 @@ prepare_figure_output <- function(landDF, approach) {
     #plot(p10)
     
     
-    pdf("output/T_density_plots.pdf", width=12,height=12)
+    pdf("output/Density_plots_A2.pdf", width=12,height=12)
     plot_grid(p5, p6, p7, p8, p9, p10,
               labels=c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"), ncol=2, align="h", axis = "l")
     dev.off()

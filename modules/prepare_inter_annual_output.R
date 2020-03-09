@@ -42,6 +42,15 @@ prepare_inter_annual_output <- function(meanDF, sdDF, nDF, annDF,
             annDF[,2+i] <- ann.meanDF
         }
         
+        ann.meanDF <- rowMeans(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
+        ann.stdevDF <- rowSds(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
+        
+        outDF <- data.frame(annDF[,c(1:2)], ann.meanDF, ann.stdevDF, n.yr)
+        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
+        
+        
+        ### write csv
+        write.csv(outDF, "output/Tmean_A2.csv", row.names=F)
         
     } else if (return.option == "annual") {
         ### return annual mean T for each year
@@ -56,19 +65,19 @@ prepare_inter_annual_output <- function(meanDF, sdDF, nDF, annDF,
             ### assign to output df
             annDF[,2+i] <- ann.meanDF
         }
+        
+        ann.meanDF <- rowMeans(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
+        ann.stdevDF <- rowSds(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
+        
+        outDF <- data.frame(annDF[,c(1:2)], ann.meanDF, ann.stdevDF, n.yr)
+        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
+        
+        
+        ### write csv
+        write.csv(outDF, "output/Tmean_A1.csv", row.names=F)
     }
     
-    ann.meanDF <- rowMeans(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
-    ann.stdevDF <- rowSds(as.matrix(annDF[,3:(n.yr+2)]), na.rm=T)
-
-    outDF <- data.frame(annDF[,c(1:2)], ann.meanDF, ann.stdevDF, n.yr)
-    colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
-    
-    
-    ### write csv
-    write.csv(outDF, "output/T_growth_summary.csv", row.names=F)
-    
-    
+ 
     ### return
     return(outDF)
 }
