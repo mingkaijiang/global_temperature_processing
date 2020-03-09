@@ -18,7 +18,7 @@ nDF <- create_storage_DF()
 
 
 ### create the file name list
-dnameDF <- data.frame(rep(c(1979:1981), each=12),
+dnameDF <- data.frame(rep(c(1979:1984), each=12),
                       rep(c("jan", "feb", "mar", "apr", "may", "jun",
                             "jul", "aug", "sep", "oct", "nov", "dec"), by = 40))
 colnames(dnameDF) <- c("year", "month")

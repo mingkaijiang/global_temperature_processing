@@ -44,6 +44,18 @@ prepare_figure_output <- function(landDF) {
                                    ifelse(plotDF$stats > 20 & plotDF$stats <= 30, "c", 
                                           ifelse(plotDF$stats > 30 & plotDF$stats <= 40, "d", "e"))))
     
+    stats.mean <- mean(plotDF$stats, na.rm=T)
+    stats.sd <- sd(plotDF$stats, na.rm=T)
+    stats.min <- min(plotDF$stats, na.rm=T)
+    stats.max <- max(plotDF$stats, na.rm=T)
+    
+    plotDF$stats3 <- cut(plotDF$stats, 
+                         breaks = c(stats.min, 
+                                    (stats.mean - stats.sd),
+                                    stats.mean,
+                                    (stats.mean + stats.sd),
+                                    stats.max))
+    
     
     ### set up plotting color discrete 
     col1 <- rev(brewer.pal(n = 7, name = "RdBu"))
@@ -137,6 +149,10 @@ prepare_figure_output <- function(landDF) {
         scale_fill_manual(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]), 
                           values=col4,
                           label=col.lab4)+
+        #scale_fill_gradient(low = "black", high = "steelblue")+
+        #stat_bin2d()+
+        #stat_contour(data=plotDF, aes(x=lon2, y=lat, z=stats2,colour=..level..),size=0.5, bins=4)+
+        #scale_colour_gradient(name=expression(paste(degree,"C",sep="")))+
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=10), 
               axis.text.x = element_text(size=10),
