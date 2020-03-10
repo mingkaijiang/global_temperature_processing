@@ -20,26 +20,32 @@ prepare_figure_output_A4 <- function(landDF) {
     
     
     ### create categorical plotting labels for each plotting variables
-    plotDF$T_mean2 <- ifelse(plotDF$T_mean <= 10, "a", 
-                             ifelse(plotDF$T_mean > 10 & plotDF$T_mean <= 20, "b",
-                                    ifelse(plotDF$T_mean > 20 & plotDF$T_mean <= 30, "c", "d")))
+    Tmean_brks <- round(quantile(plotDF$T_mean, probs = seq(0,1, 0.2)), 2)
+    plotDF$T_mean2 <- ifelse(plotDF$T_mean > Tmean_brks[1] & plotDF$T_mean <= Tmean_brks[2], "a", 
+                             ifelse(plotDF$T_mean > Tmean_brks[2] & plotDF$T_mean <= Tmean_brks[3], "b",
+                                    ifelse(plotDF$T_mean > Tmean_brks[3] & plotDF$T_mean <= Tmean_brks[4], "c", 
+                                           ifelse(plotDF$T_mean > Tmean_brks[4] & plotDF$T_mean <= Tmean_brks[5], "d", "e"))))
     
     
-    plotDF$T_sd2 <- ifelse(plotDF$T_sd <= 0.5, "a", 
-                             ifelse(plotDF$T_sd > 0.5 & plotDF$T_sd <= 1, "b",
-                                    ifelse(plotDF$T_sd > 1 & plotDF$T_sd <= 1.5, "c", 
-                                           ifelse(plotDF$T_sd > 1.5 & plotDF$T_sd <= 2, "d", "e"))))
+    Tsd_brks <- round(quantile(plotDF$T_sd, probs = seq(0,1, 0.2)), 2)
+    plotDF$T_sd2 <- ifelse(plotDF$T_sd > Tsd_brks[1] & plotDF$T_sd <= Tsd_brks[2], "a", 
+                           ifelse(plotDF$T_sd > Tsd_brks[2] & plotDF$T_sd <= Tsd_brks[3], "b",
+                                  ifelse(plotDF$T_sd > Tsd_brks[3] & plotDF$T_sd <= Tsd_brks[4], "c", 
+                                         ifelse(plotDF$T_sd > Tsd_brks[4] & plotDF$T_sd <= Tsd_brks[5], "d", "e"))))
     
     
-    plotDF$T_opt2 <- ifelse(plotDF$T_opt <= 10.0, "a", 
-                            ifelse(plotDF$T_opt > 10 & plotDF$T_opt <= 20, "b", 
-                                   ifelse(plotDF$T_opt > 20 & plotDF$T_opt <= 30, "c",  "d")))
+    Topt_brks <- round(quantile(plotDF$T_opt, probs = seq(0,1, 0.2)), 2)
+    plotDF$T_opt2 <- ifelse(plotDF$T_opt > Topt_brks[1] & plotDF$T_opt <= Topt_brks[2], "a", 
+                            ifelse(plotDF$T_opt > Topt_brks[2] & plotDF$T_opt <= Topt_brks[3], "b",
+                                   ifelse(plotDF$T_opt > Topt_brks[3] & plotDF$T_opt <= Topt_brks[4], "c", 
+                                          ifelse(plotDF$T_opt > Topt_brks[4] & plotDF$T_opt <= Topt_brks[5], "d", "e"))))
     
     ### make categorical ploting scheme
-    plotDF$stats2 <- ifelse(plotDF$stats <= 10, "a", 
-                            ifelse(plotDF$stats > 10 & plotDF$stats <= 20, "b",
-                                   ifelse(plotDF$stats > 20 & plotDF$stats <= 30, "c", 
-                                          ifelse(plotDF$stats > 30 & plotDF$stats <= 40, "d", "e"))))
+    Tstats_brks <- round(quantile(plotDF$stats, probs = seq(0,1, 0.2)), 2)
+    plotDF$stats2 <- ifelse(plotDF$stats > Tstats_brks[1] & plotDF$stats <= Tstats_brks[2], "a", 
+                            ifelse(plotDF$stats > Tstats_brks[2] & plotDF$stats <= Tstats_brks[3], "b",
+                                   ifelse(plotDF$stats > Tstats_brks[3] & plotDF$stats <= Tstats_brks[4], "c", 
+                                          ifelse(plotDF$stats > Tstats_brks[4] & plotDF$stats <= Tstats_brks[5], "d", "e"))))
     
     stats.mean <- mean(plotDF$stats, na.rm=T)
     stats.sd <- sd(plotDF$stats, na.rm=T)
@@ -55,20 +61,33 @@ prepare_figure_output_A4 <- function(landDF) {
     
     
     ### set up plotting color discrete 
-    col1 <- rev(brewer.pal(n = 4, name = "RdBu"))
-    col.lab1 <- c("0 to 10", "10 to 20", "20 to 30", "> 30")
+    col1 <- rev(brewer.pal(n = 5, name = "RdBu"))
+    col.lab1 <- c(paste0(Tmean_brks[1], " to ", Tmean_brks[2]), 
+                  paste0(Tmean_brks[2], " to ", Tmean_brks[3]), 
+                  paste0(Tmean_brks[3], " to ", Tmean_brks[4]), 
+                  paste0(Tmean_brks[4], " to ", Tmean_brks[5]),
+                  paste0(Tmean_brks[5], " to ", Tmean_brks[6]))
     
     col2 <- brewer.pal(n = 5, name = "OrRd")
-    col.lab2 <- c("0.05 to 0.5", "0.5 to 1.0", 
-                  "1.0 to 1.5", "1.5 to 2.0", "2.0 to 2.5")
+    col.lab2 <- c(paste0(Tsd_brks[1], " to ", Tsd_brks[2]), 
+                  paste0(Tsd_brks[2], " to ", Tsd_brks[3]), 
+                  paste0(Tsd_brks[3], " to ", Tsd_brks[4]), 
+                  paste0(Tsd_brks[4], " to ", Tsd_brks[5]),
+                  paste0(Tsd_brks[5], " to ", Tsd_brks[6]))
     
-    col3 <- brewer.pal(n = 4, name = "YlGn")
-    col.lab3 <- c("0 to 10", 
-                  "10 to 20", "20 to 30", "> 30")
-
+    col3 <- brewer.pal(n = 5, name = "YlGn")
+    col.lab3 <- c(paste0(Topt_brks[1], " to ", Topt_brks[2]), 
+                  paste0(Topt_brks[2], " to ", Topt_brks[3]), 
+                  paste0(Topt_brks[3], " to ", Topt_brks[4]), 
+                  paste0(Topt_brks[4], " to ", Topt_brks[5]),
+                  paste0(Topt_brks[5], " to ", Topt_brks[6]))
+    
     col4 <- brewer.pal(n = 5, name = "Blues")
-    col.lab4 <- c("0 to 10", "10 to 20", "20 to 30", 
-                  "30 to 40", "> 40")
+    col.lab4 <- c(paste0(Tstats_brks[1], " to ", Tstats_brks[2]), 
+                  paste0(Tstats_brks[2], " to ", Tstats_brks[3]), 
+                  paste0(Tstats_brks[3], " to ", Tstats_brks[4]), 
+                  paste0(Tstats_brks[4], " to ", Tstats_brks[5]),
+                  paste0(Tstats_brks[5], " to ", Tstats_brks[6]))
 
     ### plot T growth mean
     p1 <- ggplot() + 
