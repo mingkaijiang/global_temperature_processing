@@ -89,72 +89,96 @@ prepare_figure_output_A2 <- function(landDF) {
                   paste0(Tstats_brks[4], " to ", Tstats_brks[5]),
                   paste0(Tstats_brks[5], " to ", Tstats_brks[6]))
 
+    require(sf)
+    require(viridis)
+    #library("rnaturalearth")
+    #library("rnaturalearthdata")
+    
     ### plot T growth mean
     p1 <- ggplot() + 
-        geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_mean2)) +
+        #geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_mean2)) +
+        geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_mean)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[growth] * " (" * degree * "C" * ")"), 
-                          values=col1,
-                          label=col.lab1)+
+        #scale_fill_manual(name=expression(T[growth] * " (" * degree * "C" * ")"), 
+        #                  values=col1,
+        #                  label=col.lab1)+
+        #scale_fill_viridis(option = "viridis")+
+        scale_fill_viridis(option = "magma", 
+                           guide=guide_colorbar(barwidth=20))+
+        #scale_fill_viridis(option = "plasma")+
+        #scale_fill_gradientn(colours = terrain.colors(10))+
+        #scale_fill_gradientn(colours = rainbow(10))+
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=10), 
+              axis.title.x = element_blank(),
               axis.text.x = element_text(size=10),
               axis.text.y=element_text(size=10),
-              axis.title.y=element_text(size=10),
+              axis.title.y=element_blank(),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.title=element_blank(),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
-              legend.position="right")+
+              legend.position="bottom")+
         scale_x_continuous(name ="Longitude",
                          breaks=c(-180, -90, 0, 90, 180))+
         scale_y_continuous(name ="Latitude", 
-                         breaks=c(-65, -45, 0, 45, 90))
+                         breaks=c(-65, -45, 0, 45, 90))+
+        ggtitle(expression(T[growth] * " (" * degree * "C" * ")"))
+    
+    plot(p1)
 
     ### plot T growth sd
     p2 <- ggplot() + 
-        geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_sd2)) +
+        #geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_sd2)) +
+        geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_sd)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[sd] * " (" * degree * "C" * ")"), 
-                          values=col2,
-                          label=col.lab2)+
+        #scale_fill_manual(name=expression(T[sd] * " (" * degree * "C" * ")"), 
+        #                  values=col2,
+        #                  label=col.lab2)+
+        scale_fill_viridis(option = "viridis", 
+                           guide=guide_colorbar(barwidth=20))+
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=10), 
+              axis.title.x = element_blank(),
               axis.text.x = element_text(size=10),
               axis.text.y=element_text(size=10),
-              axis.title.y=element_text(size=10),
+              axis.title.y=element_blank(),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.title=element_blank(),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
-              legend.position="right")+
+              legend.position="bottom")+
         scale_x_continuous(name ="Longitude",
                            breaks=c(-180, -90, 0, 90, 180))+
         scale_y_continuous(name ="Latitude", 
-                           breaks=c(-65, -45, 0, 45, 90))
+                           breaks=c(-65, -45, 0, 45, 90))+
+        ggtitle(expression(T[sd] * " (" * degree * "C" * ")"))
     
+    #plot(p2)
     
     ### plot T opt
     p3 <- ggplot() + 
-        geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_opt2)) +
+        #geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_opt2)) +
+        geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_opt)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[opt] * " (" * degree * "C" * ")"), 
-                          values=col3,
-                          label=col.lab3)+
+        #scale_fill_manual(name=expression(T[opt] * " (" * degree * "C" * ")"), 
+        #                  values=col3,
+        #                  label=col.lab3)+
+        scale_fill_viridis(option = "viridis", 
+                           guide=guide_colorbar(barwidth=20))+
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=10), 
+              axis.title.x = element_blank(),
               axis.text.x = element_text(size=10),
               axis.text.y=element_text(size=10),
-              axis.title.y=element_text(size=10),
+              axis.title.y=element_blank(),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.title=element_blank(),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
-              legend.position="right")+
+              legend.position="bottom")+
         scale_x_continuous(name ="Longitude",
                            breaks=c(-180, -90, 0, 90, 180))+
         scale_y_continuous(name ="Latitude", 
-                           breaks=c(-65, -45, 0, 45, 90))
+                           breaks=c(-65, -45, 0, 45, 90))+
+        ggtitle(expression(T[opt] * " (" * degree * "C" * ")"))
     
     
     ### plot statistics
@@ -169,40 +193,25 @@ prepare_figure_output_A2 <- function(landDF) {
         #stat_contour(data=plotDF, aes(x=lon2, y=lat, z=stats2,colour=..level..),size=0.5, bins=4)+
         #scale_colour_gradient(name=expression(paste(degree,"C",sep="")))+
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=10), 
+              axis.title.x = element_blank(),
               axis.text.x = element_text(size=10),
               axis.text.y=element_text(size=10),
-              axis.title.y=element_text(size=10),
+              axis.title.y=element_blank(),
               legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.title=element_blank(),
               panel.grid.major=element_blank(),
               plot.title = element_text(size = 10, face = "bold"),
-              legend.position="right")+
+              legend.position="bottom")+
         scale_x_continuous(name ="Longitude",
                            breaks=c(-180, -90, 0, 90, 180))+
         scale_y_continuous(name ="Latitude", 
-                           breaks=c(-65, -45, 0, 45, 90))
+                           breaks=c(-65, -45, 0, 45, 90))+
+        ggtitle(expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))
     
-    #plot(p4)
-    
-    #multi.panel.plot <-
-    #    ggdraw() +
-    #    draw_plot(p1, x = 0.0, y = .76, width = 1.0, height = .25) +
-    #    draw_plot(p2, x = 0.0, y = .51, width = 1.0, height = .25) +
-    #    draw_plot(p3, x = 0.0, y = .26, width = 1.0, height = .25) +
-    #    draw_plot(p4, x = 0.0, y = .0, width = 1.0, height = .25)
-    
-    
-    #ggsave(filename = "output/Topt_maps_based_on_Tmean.pdf", 
-    #       plot = multi.panel.plot,
-    #       width = 89, 
-    #       height = 200,
-    #       units = "mm",
-    #       dpi = 300)
     
     pdf("output/Maps_A2.pdf", width=12,height=16)
     plot_grid(p1, p2, p3, p4,
-              labels=c("(a)", "(b)", "(c)", "(d)"), ncol=1, align="h", axis = "l")
+              labels=c("(a)", "(b)", "(c)", "(d)"), ncol=2, align="h", axis = "l")
     dev.off()
     
     
