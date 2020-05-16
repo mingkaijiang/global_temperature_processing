@@ -29,6 +29,16 @@ pacman::p_load(raster,
 
 
 #### Sourcing all R files in the modules subdirectory
-sourcefiles <- dir("modules", pattern="[.]R$", recursive = TRUE, full.names = TRUE)
-for(z in sourcefiles)source(z)
+sourcefiles1 <- dir("modules/general", pattern="[.]R$", recursive = TRUE, full.names = TRUE)
+for(z in sourcefiles1)source(z)
+
+sourcefiles2 <- dir("modules/diurnal", pattern="[.]R$", recursive = TRUE, full.names = TRUE)
+for(z in sourcefiles2)source(z)
+
+sourcefiles3 <- dir("modules/intraannual", pattern="[.]R$", recursive = TRUE, full.names = TRUE)
+for(z in sourcefiles3)source(z)
+
+sourcefiles4 <- dir("modules/interannual", pattern="[.]R$", recursive = TRUE, full.names = TRUE)
+for(z in sourcefiles4)source(z)
+
 

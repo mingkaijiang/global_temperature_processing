@@ -1,16 +1,11 @@
-prepare_intra_annual_output_alternative <- function(meanDF, sdDF, nDF, annDF, 
-                                        dname.list, return.option) {
+prepare_diurnal_output <- function(meanDF, sdDF, nDF, 
+                                   annDF, ssfDF, dname.list, 
+                                   return.option) {
     
-    ### set colnames for the summaryDFs
+    ### set colnames for the monthly mean, sd and n DF
     colnames(meanDF) <- c("lon", "lat", paste0("m_", dname.list))
     colnames(sdDF) <- c("lon", "lat", paste0("s_", dname.list))
     colnames(nDF) <- c("lon", "lat", paste0("n_", dname.list))
-    
-    ### save monthly mean, sd and sample size csv
-    #write.csv(meanDF, "output/monthly_mean.csv", row.names=F)
-    #write.csv(sdDF, "output/monthly_sd.csv", row.names=F)
-    #write.csv(nDF, "output/monthly_n.csv", row.names=F)
-    
     
     ### prepare data to calculate overall mean, sds
     mean.matrix <- as.matrix(meanDF[,-c(1:2)])
@@ -20,14 +15,12 @@ prepare_intra_annual_output_alternative <- function(meanDF, sdDF, nDF, annDF,
     ### convert unit from K to C
     mean.matrix <- mean.matrix - 273.15
     
-    
     ### get matrix dimension information to check number of years of data included
     n.yr <- dim(mean.matrix)[2]/12
     
-    
     ### now we have two return options:
-    ### either calculate growth temperature, that is, mean temperature of months when T > 0 
-    ### or, calculate annual mean temperature
+    ### 1. calculate grow season temperature, i.e., mean temperature of months when T > 0 
+    ### 2. calculate annual mean temperature
     if (return.option == "growth") {
         ### calculate growth temperature as months when T > 0
         
@@ -66,7 +59,7 @@ prepare_intra_annual_output_alternative <- function(meanDF, sdDF, nDF, annDF,
         
         
         ### write csv
-        write.csv(outDF, "output/Tmean_A4.csv", row.names=F)
+        write.csv(outDF, "output/diurnal/Tmean_A4.csv", row.names=F)
         
     } else if (return.option == "annual") {
         ### return annual mean T for each year
@@ -81,10 +74,30 @@ prepare_intra_annual_output_alternative <- function(meanDF, sdDF, nDF, annDF,
         
         
         ### write csv
-        write.csv(outDF, "output/Tmean_A3.csv", row.names=F)
+        write.csv(outDF, "output/diurnal/Tmean_A3.csv", row.names=F)
     }
     
- 
+    
+    
+    
+    
+    
+    ### calculate Topt
+    TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+    
+    ### prepare a Topt DF for the following approaches
+    ToptDF2 <- TgrDF[,c("lon", "lat", "T_opt")]
+    
+    ### test statistics
+    TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
+    
+    
+    ### merge ssf and TgrDF
+    mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
+    
+    ### subtract only land
+    landDF <- mgDF[is.na(mgDF$ssf),]
+    
     ### return
     return(outDF)
 }

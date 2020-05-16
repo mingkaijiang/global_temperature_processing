@@ -3,14 +3,27 @@
 ###############
 ############### code developed by: Mingkai Jiang (m.jiang@westernsydney.edu.au)
 
+######################################################################################
+################################## General codes #####################################
 #### clear wk space
 rm(list=ls(all=TRUE))
 
 #### source all necessary files
 source("prepare.R")
+################################## End general codes #####################################
+##########################################################################################
 
 
-###################### General codes
+
+###########################################################################################
+################## Basic code to process temperature data #################################
+#### Structure:
+#### 1. prepare storage DF
+#### 2. loop through custom-defined year, 
+####    and perform monthly mean, sd and n calculation, based on 6-hourly data
+#### 3. prepare annual storage DF
+#### 4. prepare sea surface mask
+
 #### set up the storage DF to store the means, sample size and sd,
 #### at monthly timestep
 meanDF <- create_storage_DF()
@@ -44,44 +57,91 @@ annDF <- meanDF[,c(1:2)]
 ### prepare sea surface area mask
 ssfDF <- read_sea_surface_mask()
 
+### save mean, sd and n datasets
+save_monthly_output(meanDF, sdDF, nDF, dname.list)
 
-### Notes:
-### we have 2 possible ways of calculating Tgrowth:
-### A1. Based on annual mean temperature
-### A2. Based on months with monthly T > 0 C
-### we also have 2 possible ways of calculating Tsd:
-### A3. Based on annual mean temperature (i.e. 1 value per year)
-### A4. Based on monthly mean temperature (i.e. 12 values per year)
-
-### Do all four and check robustness of the results
-### We decided to use A4
+######################################## End basic code ##################################
+##########################################################################################
 
 
-### new structure, to implement after designing nicer plots
-### 1. use 6-hourly data to obtain monthly mean and sd
-###    the sd is indicative of diurnal variability
-### 2. use 6-hourly data to obtain monthly mean Tgrowth,
-###    Tgrowth has a condition with monthly T > 0 degree C
-###    use monthly mean Tgrowth to obtain sd
-###    the sd is indicative of intra-annual variability
-### 3. use 6-hourly data to obtain monthly mean Tgrowth,
-###    Tgrowth is all temperature data inclusive,
-###    use monthly mean Tgrowth to obtain sd
-###    the sd is indicative of intra-annual variability
-### 4. use 6-hourly data to obtain annual mean,
-###    use annal mean to obtain sd
-###    the sd is indicative of inter-annual variability
+##########################################################################################
+############################# temperature calculations ###################################
+### Structure:
+### 1.1. Use monthly mean, sd and n information to calculate pooled mean Tgrowth and pooled sd.
+###      The pooled sd is indicative of diurnal variability.
+###      Tgrowth is monthly mean T (i.e. no filtering assumption).
+### 1.2. Use monthly mean, sd and n information to calculate pooled mean Tgrowth and pooled sd.
+###      The pooled sd is indicative of diurnal variability.
+###      Tgrowth is an average of monthly mean T > 0 degree C.
+###      Same rule applies to sd calculation. 
+###
+### 2.1. Use monthly mean to calculate pooled mean Tgrowth, 
+###      but calculate sd based on the monthly mean T.
+###      SD is indicative of seasonal interannual variability.
+###      Tgrowth is monthly mean T (i.e. no filtering assumption).
+### 2.2. Use monthly mean to calculate pooled mean Tgrowth, 
+###      but calculate sd based on the monthly mean T.
+###      SD is indicative of seasonal interannual variability.
+###      Tgrowth is an average of monthly mean T > 0 degree C.
+###      Same rule applies to sd calculation. 
+###
+### 3.1. Use monthly mean to calculate annual mean Tgrowth,
+###      and use annual mean to obtain SD. 
+###      SD is indicative of inter-annual variability.
+###      Based on all data within the year (i.e. 12 months).
+### 3.2. Use monthly mean where Tmean > 0 degree C to calculate annual mean Tgrowth,
+###      and use annual mean to obtain SD.
+###      SD is indicative of inter-annual variability.
+
+#### 1.1. pooled monthly mean Tmean, pooled SD of monthly values
+###       SD is indicative of diurnal and day-to-day variability within each month. 
+###       Use all data within a year (i.e. do not filter out monthly mean < 0 degree C)
+landDF1 <- prepare_diurnal_output(meanDF, sdDF, nDF, 
+                                  annDF, ssfDF, dname.list, 
+                                  return.option="growth")
+
+
+
+### prepare global maps, A4 method
+### need to go into the function to make the plot
+prepare_figure_output_A4(landDF)
+
+
+
 
 
 #################### Approach 4: Monthly mean with monthly mean T > 0 C
 ### calculate mean T, sd T based on all data to get Tgrowth
 #TgrDF <- prepare_intra_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
 #                                     return.option="growth")
+### calculate Topt
+TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
+
+### prepare a Topt DF for the following approaches
+ToptDF2 <- TgrDF[,c("lon", "lat", "T_opt")]
+
+### test statistics
+TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
+
+
+### merge ssf and TgrDF
+mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
+
+### subtract only land
+landDF <- mgDF[is.na(mgDF$ssf),]
+
+### prepare global maps, A4 method
+### need to go into the function to make the plot
+prepare_figure_output_A4(landDF)
+
+
+
+
+
 
 ### this is an alternative way of calculating mean and sd
 ### For SD, it is based on sd of monthly data, hence the pooled SD
-TgrDF <- prepare_intra_annual_output_alternative(meanDF, sdDF, nDF, annDF, dname.list, 
-                                                 return.option="growth")
+
 ### calculate Topt
 TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
 
