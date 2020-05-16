@@ -57,6 +57,22 @@ ssfDF <- read_sea_surface_mask()
 ### We decided to use A4
 
 
+### new structure, to implement after designing nicer plots
+### 1. use 6-hourly data to obtain monthly mean and sd
+###    the sd is indicative of diurnal variability
+### 2. use 6-hourly data to obtain monthly mean Tgrowth,
+###    Tgrowth has a condition with monthly T > 0 degree C
+###    use monthly mean Tgrowth to obtain sd
+###    the sd is indicative of intra-annual variability
+### 3. use 6-hourly data to obtain monthly mean Tgrowth,
+###    Tgrowth is all temperature data inclusive,
+###    use monthly mean Tgrowth to obtain sd
+###    the sd is indicative of intra-annual variability
+### 4. use 6-hourly data to obtain annual mean,
+###    use annal mean to obtain sd
+###    the sd is indicative of inter-annual variability
+
+
 #################### Approach 4: Monthly mean with monthly mean T > 0 C
 ### calculate mean T, sd T based on all data to get Tgrowth
 #TgrDF <- prepare_intra_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 

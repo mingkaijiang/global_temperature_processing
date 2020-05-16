@@ -43,8 +43,8 @@ prepare_intra_annual_output_alternative <- function(meanDF, sdDF, nDF, annDF,
         
         ### calculate row means
         test1 <- tmpDF2 * tmpDF4
-        test2 <- rowSums(test1)
-        test3 <- rowSums(tmpDF4)
+        test2 <- rowSums(test1, na.rm=T)
+        test3 <- rowSums(tmpDF4, na.rm=T)
         test4 <- test2/test3
         annDF$T_mean <- test4
         
@@ -52,10 +52,10 @@ prepare_intra_annual_output_alternative <- function(meanDF, sdDF, nDF, annDF,
         test1 <- tmpDF3 * tmpDF3
         test2 <- tmpDF4 - 1
         test3 <- test1 * test2
-        test4 <- rowSums(test3)
-        test5 <- rowSums(tmpDF4)
+        test4 <- rowSums(test3, na.rm=T)
+        test5 <- rowSums(tmpDF4, na.rm=T)
         test6 <- tmpDF4/tmpDF4
-        test7 <- rowSums(test6)
+        test7 <- rowSums(test6, na.rm=T)
         test8 <- test5 - test7
         test9 <- sqrt(test4/test8)
         
