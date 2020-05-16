@@ -3,8 +3,8 @@ if(!dir.exists("output")) {
     dir.create("output", showWarnings = FALSE)
 }
 
-if(!dir.exists("output/hourly")) {
-    dir.create("output/hourly", showWarnings = FALSE)
+if(!dir.exists("output/diurnal")) {
+    dir.create("output/diurnal", showWarnings = FALSE)
 }
 
 if(!dir.exists("output/intraannual")) {

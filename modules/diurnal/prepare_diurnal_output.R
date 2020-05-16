@@ -55,49 +55,68 @@ prepare_diurnal_output <- function(meanDF, sdDF, nDF,
         annDF$T_sd <- test9
         
         outDF <- data.frame(annDF[,c(1:4)], n.yr)
-        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
+        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "n_year")
         
+        ### calculate Topt
+        outDF$T_opt <- 13.9 + 0.61 * outDF$T_mean
+        
+        ### test statistic
+        outDF$T_param <- with(outDF, (T_opt - T_mean) / T_sd)
+        
+        ### merge ssf and TgrDF
+        mgDF <- merge(outDF, ssfDF, by=c("lon", "lat"))
+        
+        ### subtract only land
+        landDF <- mgDF[is.na(mgDF$ssf),]
         
         ### write csv
-        write.csv(outDF, "output/diurnal/Tmean_A4.csv", row.names=F)
+        write.csv(landDF, "output/diurnal/Tmean_grow_season.csv", row.names=F)
         
     } else if (return.option == "annual") {
         ### return annual mean T for each year
         
+        ### calculate annual Tmean
+        test1 <- mean.matrix * n.matrix
+        test2 <- rowSums(test1, na.rm=T)
+        test3 <- rowSums(n.matrix, na.rm=T)
+        test4 <- test2/test3
+        annDF$T_mean <- test4
         
         ### calculate annual T based on monthly T
-        annDF$T_mean <- rowMeans(mean.matrix, na.rm=T)
-        annDF$T_sd <- rowSds(mean.matrix, na.rm=T)
+        ### calculate row sd
+        test1 <- sd.matrix * sd.matrix
+        test2 <- n.matrix - 1
+        test3 <- test1 * test2
+        test4 <- rowSums(test3, na.rm=T)
+        test5 <- rowSums(n.matrix, na.rm=T)
+        test6 <- n.matrix/n.matrix
+        test7 <- rowSums(test6, na.rm=T)
+        test8 <- test5 - test7
+        test9 <- sqrt(test4/test8)
         
+        annDF$T_sd <- test9
+        
+        ### colnames
         outDF <- data.frame(annDF[,c(1:4)], n.yr)
-        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "T_n")
+        colnames(outDF) <- c("lon", "lat", "T_mean", "T_sd", "n_year")
         
+        ### calculate Topt
+        outDF$T_opt <- 13.9 + 0.61 * outDF$T_mean
+        
+        ### test statistic
+        outDF$T_param <- with(outDF, (T_opt - T_mean) / T_sd)
+        
+        ### merge ssf and TgrDF
+        mgDF <- merge(outDF, ssfDF, by=c("lon", "lat"))
+        
+        ### subtract only land
+        landDF <- mgDF[is.na(mgDF$ssf),]
         
         ### write csv
-        write.csv(outDF, "output/diurnal/Tmean_A3.csv", row.names=F)
+        write.csv(landDF, "output/diurnal/Tmean_annual.csv", row.names=F)
     }
     
     
-    
-    
-    
-    
-    ### calculate Topt
-    TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-    
-    ### prepare a Topt DF for the following approaches
-    ToptDF2 <- TgrDF[,c("lon", "lat", "T_opt")]
-    
-    ### test statistics
-    TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-    
-    
-    ### merge ssf and TgrDF
-    mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-    
-    ### subtract only land
-    landDF <- mgDF[is.na(mgDF$ssf),]
-    
     ### return
-    return(outDF)
+    return(landDF)
 }

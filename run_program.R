@@ -93,148 +93,63 @@ save_monthly_output(meanDF, sdDF, nDF, dname.list)
 ###      and use annual mean to obtain SD.
 ###      SD is indicative of inter-annual variability.
 
+###########
 #### 1.1. pooled monthly mean Tmean, pooled SD of monthly values
 ###       SD is indicative of diurnal and day-to-day variability within each month. 
 ###       Use all data within a year (i.e. do not filter out monthly mean < 0 degree C)
 landDF1 <- prepare_diurnal_output(meanDF, sdDF, nDF, 
                                   annDF, ssfDF, dname.list, 
+                                  return.option="annual")
+
+#### 1.2. same as 1.1, but with growing season Tmean (i.e. Tmean > 0 degree C)
+landDF2 <- prepare_diurnal_output(meanDF, sdDF, nDF, 
+                                  annDF, ssfDF, dname.list, 
                                   return.option="growth")
 
+### prepare global maps, A4 method
+### need to go into the function to make the plot
+#prepare_figure_output_A4(landDF1)
 
+
+###########
+#### 2.1. pooled monthly mean Tmean, 
+###       SD based on monthly Tmean
+###       SD is indicative of seasonal interannual variability. 
+###       Use all data within a year (i.e. do not filter out monthly mean < 0 degree C)
+landDF3 <- prepare_intra_annual_output(meanDF, 
+                                       annDF, ssfDF, dname.list, 
+                                       return.option="annual")
+
+#### 2.2. same as 2.1, but with growting season Tmean (i.e. monthly mean T > 0 degree C)
+landDF4 <- prepare_intra_annual_output(meanDF, 
+                                       annDF, ssfDF, dname.list, 
+                                       return.option="growth")
 
 ### prepare global maps, A4 method
 ### need to go into the function to make the plot
-prepare_figure_output_A4(landDF)
+#prepare_figure_output_A4(landDF)
 
 
+###########
+#### 3.1. calculate annual Tmean based on monthly Tmean, 
+###       SD based on annual Tmean
+###       SD is indicative of interannual variability. 
+###       Use all data within a year (i.e. do not filter out monthly mean < 0 degree C)
+landDF5 <- prepare_inter_annual_output(meanDF, 
+                                       annDF, ssfDF, dname.list, 
+                                       return.option="annual")
+
+#### 3.2. same as 3.1, but with growing season Tmean 
+###       (i.e. calculate annual Tmean based on monthly mean > 0 degree C)
+landDF6 <- prepare_inter_annual_output(meanDF, 
+                                       annDF, ssfDF, dname.list, 
+                                       return.option="growth")
 
 
-
-#################### Approach 4: Monthly mean with monthly mean T > 0 C
-### calculate mean T, sd T based on all data to get Tgrowth
-#TgrDF <- prepare_intra_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
-#                                     return.option="growth")
-### calculate Topt
-TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-
-### prepare a Topt DF for the following approaches
-ToptDF2 <- TgrDF[,c("lon", "lat", "T_opt")]
-
-### test statistics
-TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-
-
-### merge ssf and TgrDF
-mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-
-### subtract only land
-landDF <- mgDF[is.na(mgDF$ssf),]
-
-### prepare global maps, A4 method
-### need to go into the function to make the plot
-prepare_figure_output_A4(landDF)
-
-
-
-
-
-
-### this is an alternative way of calculating mean and sd
-### For SD, it is based on sd of monthly data, hence the pooled SD
-
-### calculate Topt
-TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-
-### prepare a Topt DF for the following approaches
-ToptDF2 <- TgrDF[,c("lon", "lat", "T_opt")]
-
-### test statistics
-TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-
-
-### merge ssf and TgrDF
-mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-
-### subtract only land
-landDF <- mgDF[is.na(mgDF$ssf),]
-
-### prepare global maps, A4 method
-### need to go into the function to make the plot
-prepare_figure_output_A4(landDF)
-
-
-############################ Sensitivity #####################################
-
-#################### Approach 2: Annual mean with monthly mean T > 0 C
-#### calculate mean T, sd T based on all data to get Tgrowth
-#TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
-#                                     return.option="growth")
-#
-#### calculate Topt
-#TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-#
-#### prepare a Topt DF for the following approaches
-#ToptDF1 <- TgrDF[,c("lon", "lat", "T_opt")]
-#
-#### test statistics
-#TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-#
-#
-#### merge ssf and TgrDF
-#mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-#
-#### subtract only land
-#landDF <- mgDF[is.na(mgDF$ssf),]
-#
 #### prepare global maps, A2 method
 #### need to go into the function to make the plot
 #prepare_figure_output_A2(landDF)
 
 
 
-#################### Approach 1: annual mean temperature
-#### calculate mean T, sd T based on all data to get Tgrowth
-#TgrDF <- prepare_inter_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
-#                                     return.option="annual")
-#
-#### calculate Topt
-##TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-#TgrDF$T_opt <- ToptDF1$T_opt
-#
-#### test statistics
-#TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-#
-#
-#### merge ssf and TgrDF
-#mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-#
-#### subtract only land
-#landDF <- mgDF[is.na(mgDF$ssf),]
-#
-#### prepare global maps, A1 method
-#### need to go into the function to make the plot
-#prepare_figure_output_A1(landDF)
 
-#################### Approach 3: Intra-annual variation with all data
-#### calculate mean T, sd T based on all data to get Tgrowth
-#TgrDF <- prepare_intra_annual_output(meanDF, sdDF, nDF, annDF, dname.list, 
-#                                     return.option="annual")
-#
-#### calculate Topt
-##TgrDF$T_opt <- 13.9 + 0.61 * TgrDF$T_mean
-#TgrDF$T_opt <- ToptDF2$T_opt
-#
-#
-#### test statistics
-#TgrDF$stats <- with(TgrDF, (T_opt - T_mean) / T_sd)
-#
-#
-#### merge ssf and TgrDF
-#mgDF <- merge(TgrDF, ssfDF, by=c("lon", "lat"))
-#
-#### subtract only land
-#landDF <- mgDF[is.na(mgDF$ssf),]
-#
-#### prepare global maps, A3 method
-#### need to go into the function to make the plot
-#prepare_figure_output_A3(landDF)
