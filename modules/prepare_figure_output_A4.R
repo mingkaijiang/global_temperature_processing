@@ -5,10 +5,16 @@ prepare_figure_output_A4 <- function(landDF) {
     ### make a new DF
     plotDF <- landDF
     
-    plotDF2 <- plotDF[!is.na(plotDF$T_sd),]
+    p1 <- ggplot() + 
+        geom_tile(data=plotDF, aes(y=lat, x=lon, fill=T_mean)) +
+        coord_quickmap(xlim=range(plotDF$lon), ylim=range(plotDF$lat))
+    plot(p1)    
+    
+    plotDF <- plotDF[!is.na(plotDF$T_sd),]
     
     ### delete unreasonably small T sd
-    plotDF <- plotDF2[plotDF2$T_sd >= 0.05, ]
+    #plotDF <- plotDF[plotDF$T_sd >= 0.05, ]
+    plotDF$T_sd <- ifelse(plotDF$T_sd >= 1.0, plotDF$T_sd, 1.0)
     
     
     ########################### prepare map output

@@ -152,7 +152,7 @@ prepare_figure_output_A2 <- function(landDF) {
                            breaks=c(-65, -45, 0, 45, 90))+
         ggtitle(expression(T[sd] * " (" * degree * "C" * ")"))
     
-    #plot(p2)
+    plot(p2)
     
     ### plot T opt
     p3 <- ggplot() + 
@@ -208,6 +208,7 @@ prepare_figure_output_A2 <- function(landDF) {
                            breaks=c(-65, -45, 0, 45, 90))+
         ggtitle(expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))
     
+    plot(p4)
     
     pdf("output/Maps_A2.pdf", width=12,height=16)
     plot_grid(p1, p2, p3, p4,

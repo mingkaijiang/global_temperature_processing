@@ -8,9 +8,6 @@ prepare_inter_annual_output <- function(meanDF, sdDF, nDF, annDF,
     
     ### save monthly mean, sd and sample size csv
     write.csv(meanDF, "output/monthly_mean.csv", row.names=F)
-    #write.csv(sdDF, "output/monthly_sd.csv", row.names=F)
-    #write.csv(nDF, "output/monthly_sample_size.csv", row.names=F)
-    
     
     ### prepare data to calculate overall mean, sds
     mean.matrix <- as.matrix(meanDF[,-c(1:2)])
