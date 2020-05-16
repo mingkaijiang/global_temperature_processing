@@ -3,6 +3,17 @@ if(!dir.exists("output")) {
     dir.create("output", showWarnings = FALSE)
 }
 
+if(!dir.exists("output/hourly")) {
+    dir.create("output/hourly", showWarnings = FALSE)
+}
+
+if(!dir.exists("output/intraannual")) {
+    dir.create("output/intraannual", showWarnings = FALSE)
+}
+
+if(!dir.exists("output/interannual")) {
+    dir.create("output/interannual", showWarnings = FALSE)
+}
 
 #### Install packages
 if(!require(pacman))install.packages("pacman")
