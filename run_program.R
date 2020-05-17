@@ -106,6 +106,7 @@ landDF2 <- prepare_diurnal_output(meanDF, sdDF, nDF,
                                   annDF, ssfDF, dname.list, 
                                   return.option="growth")
 
+#### 1.3. Making plots
 ### need to go into the function to make the plot
 ## landDF1
 plotDF = landDF1
@@ -116,7 +117,6 @@ prepare_figure_output(plotDF = landDF1,
                       sd.filter.option = "no.filter",
                       outdir = "output/diurnal/", 
                       outname = "diurnal_annual")
-
 
 ## landDF2
 plotDF = landDF2
@@ -142,6 +142,7 @@ landDF4 <- prepare_intra_annual_output(meanDF,
                                        annDF, ssfDF, dname.list, 
                                        return.option="growth")
 
+#### 2.3. Making plots 
 ### need to go into the function to make the plot
 ## plotDF3
 plotDF = landDF3
@@ -179,6 +180,7 @@ landDF6 <- prepare_inter_annual_output(meanDF,
                                        return.option="growth")
 
 
+#### 3.3. Making plots 
 ### need to go into the function to make the plot
 ## plotDF5
 plotDF = landDF5
@@ -204,3 +206,23 @@ prepare_figure_output(plotDF = landDF6,
 
 ############################# end temperature calculations ###############################
 ##########################################################################################
+
+
+
+##########################################################################################
+############################# biome-specific patterns ####################################
+#### structure:
+#### 1.1. Merge DF with biome grids
+#### 1.2. Make biome-specific plots
+
+### 1.1. prepare biomeDF
+make_biome_specific_plot(inDF=plotDF1)
+
+
+############################## end biome-specific patterns ###############################
+##########################################################################################
+
+
+
+
+

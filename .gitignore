@@ -41,3 +41,13 @@ rsconnect/
 *.pdf
 *.tiff
 *.docx
+*.shp
+*.lyr
+*.dbf
+*.htm
+*.prj
+*.sbn
+*.sbx
+*.xml
+*.shx
+
