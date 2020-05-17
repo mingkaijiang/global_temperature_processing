@@ -1,4 +1,4 @@
-prepare_figure_output_diurnal <- function(plotDF, sd.filter.option,
+prepare_figure_output <- function(plotDF, sd.filter.option,
                                           outdir, outname) {
     
     ### read me
@@ -51,16 +51,16 @@ prepare_figure_output_diurnal <- function(plotDF, sd.filter.option,
     #### prepare discrete breaks
     Tmean_brks <- round(quantile(plotDF$T_mean, 
                                  probs = seq(0, 1, 
-                                             (n.discrete.color-2)/100)), 0)
+                                             (n.discrete.color-2)/100)), 2)
     Topt_brks <- round(quantile(plotDF$T_opt, 
                                 probs = seq(0,1, 
-                                            (n.discrete.color-2)/100)), 0)
+                                            (n.discrete.color-2)/100)), 2)
     Tsd_brks <- round(quantile(plotDF$T_sd, 
                                probs = seq(0,1, 
-                                           (n.discrete.color-2)/100)), 1)
+                                           (n.discrete.color-2)/100)), 2)
     Tparam_brks <- round(quantile(plotDF$T_param, 
                                   probs = seq(0,1, 
-                                              (n.discrete.color-2)/100)), 1)
+                                              (n.discrete.color-2)/100)), 2)
     
     ### be more inclusive of the data
     Tmean_brks[1] <- Tmean_brks[1]-1.5
@@ -71,13 +71,13 @@ prepare_figure_output_diurnal <- function(plotDF, sd.filter.option,
     Tmean_brks[n.discrete.color+1] <- Tmean_brks[n.discrete.color+1]+2.5
     Topt_brks[n.discrete.color+1] <- Topt_brks[n.discrete.color+1]+2.5
     Tsd_brks[n.discrete.color+1] <- Tsd_brks[n.discrete.color+1]+1.0
-    Tparam_brks[n.discrete.color+1] <- Tparam_brks[n.discrete.color+1]+2.0
+    Tparam_brks[n.discrete.color+1] <- Tparam_brks[n.discrete.color+1]+1.0
     
     ### round
-    Tmean_brks <- round(Tmean_brks, 0)
-    Topt_brks <- round(Topt_brks, 0)
-    Tsd_brks <- round(Tsd_brks, 1)
-    Tparam_brks <- round(Tparam_brks, 1)
+    Tmean_brks <- round(Tmean_brks, 1)
+    Topt_brks <- round(Topt_brks, 1)
+    Tsd_brks <- round(Tsd_brks, 2)
+    Tparam_brks <- round(Tparam_brks, 2)
     
     #### create categorical plotting labels for each plotting variables
     plotDF$T_mean2 <- cut(plotDF$T_mean, 
@@ -91,6 +91,9 @@ prepare_figure_output_diurnal <- function(plotDF, sd.filter.option,
     
     plotDF$T_param2 <- cut(plotDF$T_param, 
                            breaks = Tparam_brks)
+    
+    ## remove NAs
+    plotDF <- plotDF[!is.na(plotDF$T_param2),]
     
     ### brk labels
     Tmean_lab <- as.character(rev(unique(plotDF$T_mean2)))

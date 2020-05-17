@@ -112,10 +112,10 @@ plotDF = landDF1
 sd.filter.option = "no.filter"
 outdir = "output/diurnal/"
 outname = "diurnal_annual"
-prepare_figure_output_diurnal(plotDF = landDF1,
-                              sd.filter.option = "no.filter",
-                              outdir = "output/diurnal/", 
-                              outname = "diurnal_annual")
+prepare_figure_output(plotDF = landDF1,
+                      sd.filter.option = "no.filter",
+                      outdir = "output/diurnal/", 
+                      outname = "diurnal_annual")
 
 
 ## landDF2
@@ -123,10 +123,10 @@ plotDF = landDF2
 sd.filter.option = "no.filter"
 outdir = "output/diurnal/"
 outname = "diurnal_growth"
-prepare_figure_output_diurnal(plotDF = landDF2,
-                              sd.filter.option = "no.filter",
-                              outdir = "output/diurnal/", 
-                              outname = "diurnal_growth")
+prepare_figure_output(plotDF = landDF2,
+                      sd.filter.option = "no.filter",
+                      outdir = "output/diurnal/", 
+                      outname = "diurnal_growth")
 
 ###########
 #### 2.1. pooled monthly mean Tmean, 
@@ -143,11 +143,25 @@ landDF4 <- prepare_intra_annual_output(meanDF,
                                        return.option="growth")
 
 ### need to go into the function to make the plot
-prepare_figure_output_intraannual(plotDF = landDF3,
-                                  sd.filter.option = "no.filter",
-                                  outdir = "output/diurnal/", 
-                                  outname = "diurnal")
+## plotDF3
+plotDF = landDF3
+sd.filter.option = "no.filter"
+outdir = "output/intraannual/"
+outname = "intraannual_annual"
+prepare_figure_output(plotDF = landDF3,
+                      sd.filter.option = "no.filter",
+                      outdir = "output/intraannual/", 
+                      outname = "intraannual_annual")
 
+## plotDF4
+plotDF = landDF4
+sd.filter.option = "no.filter"
+outdir = "output/intraannual/"
+outname = "intraannual_growth"
+prepare_figure_output(plotDF = landDF4,
+                      sd.filter.option = "no.filter",
+                      outdir = "output/intraannual/", 
+                      outname = "intraannual_growth")
 
 ###########
 #### 3.1. calculate annual Tmean based on monthly Tmean, 
@@ -165,10 +179,28 @@ landDF6 <- prepare_inter_annual_output(meanDF,
                                        return.option="growth")
 
 
-#### prepare global maps, A2 method
-#### need to go into the function to make the plot
-#prepare_figure_output_A2(landDF)
+### need to go into the function to make the plot
+## plotDF5
+plotDF = landDF5
+sd.filter.option = "no.filter"
+outdir = "output/interannual/"
+outname = "interannual_annual"
+prepare_figure_output(plotDF = landDF5,
+                      sd.filter.option = "no.filter",
+                      outdir = "output/interannual/", 
+                      outname = "interannual_annual")
+
+## plotDF6
+plotDF = landDF6
+sd.filter.option = "no.filter"
+outdir = "output/interannual/"
+outname = "interannual_growth"
+prepare_figure_output(plotDF = landDF6,
+                      sd.filter.option = "no.filter",
+                      outdir = "output/interannual/", 
+                      outname = "interannual_growth")
 
 
 
-
+############################# end temperature calculations ###############################
+##########################################################################################
