@@ -108,7 +108,8 @@ landDF2 <- prepare_diurnal_output(meanDF, sdDF, nDF,
 
 ### prepare global maps, A4 method
 ### need to go into the function to make the plot
-#prepare_figure_output_A4(landDF1)
+prepare_figure_output_diurnal(plotDF = landDF1,
+                              sd.filter.option = "no.filter")
 
 
 ###########

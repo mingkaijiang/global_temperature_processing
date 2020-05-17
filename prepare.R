@@ -25,7 +25,8 @@ pacman::p_load(raster,
                matrixStats,
                RColorBrewer,
                ggplot2,
-               cowplot)    
+               cowplot,
+               doBy)    
 
 
 #### Sourcing all R files in the modules subdirectory
