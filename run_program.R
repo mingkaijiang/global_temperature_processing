@@ -106,11 +106,27 @@ landDF2 <- prepare_diurnal_output(meanDF, sdDF, nDF,
                                   annDF, ssfDF, dname.list, 
                                   return.option="growth")
 
-### prepare global maps, A4 method
 ### need to go into the function to make the plot
+## landDF1
+plotDF = landDF1
+sd.filter.option = "no.filter"
+outdir = "output/diurnal/"
+outname = "diurnal_annual"
 prepare_figure_output_diurnal(plotDF = landDF1,
-                              sd.filter.option = "no.filter")
+                              sd.filter.option = "no.filter",
+                              outdir = "output/diurnal/", 
+                              outname = "diurnal_annual")
 
+
+## landDF2
+plotDF = landDF2
+sd.filter.option = "no.filter"
+outdir = "output/diurnal/"
+outname = "diurnal_growth"
+prepare_figure_output_diurnal(plotDF = landDF2,
+                              sd.filter.option = "no.filter",
+                              outdir = "output/diurnal/", 
+                              outname = "diurnal_growth")
 
 ###########
 #### 2.1. pooled monthly mean Tmean, 
@@ -126,9 +142,11 @@ landDF4 <- prepare_intra_annual_output(meanDF,
                                        annDF, ssfDF, dname.list, 
                                        return.option="growth")
 
-### prepare global maps, A4 method
 ### need to go into the function to make the plot
-#prepare_figure_output_A4(landDF)
+prepare_figure_output_intraannual(plotDF = landDF3,
+                                  sd.filter.option = "no.filter",
+                                  outdir = "output/diurnal/", 
+                                  outname = "diurnal")
 
 
 ###########

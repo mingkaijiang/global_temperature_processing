@@ -1,5 +1,5 @@
-prepare_figure_output_diurnal <- function(plotDF, sd.filter.option,
-                                          outdir, outname) {
+prepare_figure_output_intraannual <- function(plotDF, sd.filter.option,
+                                              outdir, outname) {
     
     ### read me
     ### sd.filter option: 
