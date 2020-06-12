@@ -26,7 +26,13 @@ pacman::p_load(raster,
                RColorBrewer,
                ggplot2,
                cowplot,
-               doBy)    
+               doBy,
+               sf,
+               rgdal,
+               maptools,
+               plyr,
+               raster,
+               ggthemes)    
 
 
 #### Sourcing all R files in the modules subdirectory

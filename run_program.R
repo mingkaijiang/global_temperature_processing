@@ -32,7 +32,7 @@ nDF <- create_storage_DF()
 
 
 ### create the file name list
-dnameDF <- data.frame(rep(c(1979:1984), each=12),
+dnameDF <- data.frame(rep(c(1979:2018), each=12),
                       rep(c("jan", "feb", "mar", "apr", "may", "jun",
                             "jul", "aug", "sep", "oct", "nov", "dec"), by = 40))
 colnames(dnameDF) <- c("year", "month")
@@ -216,13 +216,24 @@ prepare_figure_output(plotDF = landDF6,
 #### 1.2. Make biome-specific plots
 
 ### 1.1. prepare biomeDF
-make_biome_specific_plot(inDF=plotDF1)
+make_biome_specific_plot(inDF=landDF1)
 
 
 ############################## end biome-specific patterns ###############################
 ##########################################################################################
 
-
+### To do list:
+### 1. add biome and make biome-specific statistical comparison
+### 2. investigate if precipitation can explain the biome-specific statistical comparison
+###    i.e. linear model, with biome and precipitation as fixed factor
+### 3. write result interpretation
+### 4. add background information to introduction
+### 5. add to-analyze list for future investigations to enrich the paper
+###    possible list include:
+###                          5.1. CMIP6 temperature to see if this universal number change
+###                          5.2. Implication of this number in TBMs
+###                          5.3. How it correlates with plant's thermal adaptation strategy/traits
+###                          5.4. Why it's worth Nature publishing
 
 
 
