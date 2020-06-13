@@ -421,6 +421,10 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
         guides(fill = guide_legend(nrow=5, byrow = T))
     
     
+    ########################### plot distribution for each biome ##############################
+    
+    
+    
     pdf(paste0(outdir, outname, "_biome_plot.pdf"),
         width=14, height=12)
     plot_grid(p1, p2, p3, p4,
