@@ -215,8 +215,67 @@ prepare_figure_output(plotDF = landDF6,
 #### 1.1. Merge DF with biome grids
 #### 1.2. Make biome-specific plots
 
-### 1.1. prepare biomeDF
-make_biome_specific_plot(inDF=landDF1)
+## landDF1
+plotDF = landDF1
+sd.filter.option = "no.filter"
+outdir = "output/diurnal/"
+outname = "diurnal_annual"
+merge_biome_information_and_plot(plotDF = landDF1,
+                                 sd.filter.option = "no.filter",
+                                 outdir = "output/diurnal/", 
+                                 outname = "diurnal_annual")
+
+## landDF2
+plotDF = landDF2
+sd.filter.option = "no.filter"
+outdir = "output/diurnal/"
+outname = "diurnal_growth"
+merge_biome_information_and_plot(plotDF = landDF2,
+                                 sd.filter.option = "no.filter",
+                                 outdir = "output/diurnal/", 
+                                 outname = "diurnal_growth")
+
+
+
+## plotDF3
+plotDF = landDF3
+sd.filter.option = "no.filter"
+outdir = "output/intraannual/"
+outname = "intraannual_annual"
+merge_biome_information_and_plot(plotDF = landDF3,
+                                 sd.filter.option = "no.filter",
+                                 outdir = "output/intraannual/", 
+                                 outname = "intraannual_annual")
+
+## plotDF4
+plotDF = landDF4
+sd.filter.option = "no.filter"
+outdir = "output/intraannual/"
+outname = "intraannual_growth"
+merge_biome_information_and_plot(plotDF = landDF4,
+                                 sd.filter.option = "no.filter",
+                                 outdir = "output/intraannual/", 
+                                 outname = "intraannual_growth")
+
+## plotDF5
+plotDF = landDF5
+sd.filter.option = "no.filter"
+outdir = "output/interannual/"
+outname = "interannual_annual"
+merge_biome_information_and_plot(plotDF = landDF5,
+                                 sd.filter.option = "no.filter",
+                                 outdir = "output/interannual/", 
+                                 outname = "interannual_annual")
+
+## plotDF6
+plotDF = landDF6
+sd.filter.option = "no.filter"
+outdir = "output/interannual/"
+outname = "interannual_growth"
+merge_biome_information_and_plot(plotDF = landDF6,
+                                 sd.filter.option = "no.filter",
+                                 outdir = "output/interannual/", 
+                                 outname = "interannual_growth")
 
 
 ############################## end biome-specific patterns ###############################
