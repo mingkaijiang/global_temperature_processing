@@ -438,38 +438,9 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
         guides(fill = guide_legend(nrow=5, byrow = T))
     
     
-    ########################### plot distribution for each biome ##############################
-    ### Tgrowth
-    ph1 <- ggplot(plotDF.rev) +
-        geom_density(aes(x=T_mean, group=BIOME2, fill=BIOME2), alpha=0.2)+
-        theme_linedraw() +
-        theme(panel.grid.minor=element_blank(),
-              axis.text.x=element_text(size=12),
-              axis.title.x=element_text(size=14),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
-              panel.grid.major=element_blank(),
-              legend.position="none",
-              legend.box = 'vertical',
-              legend.box.just = 'left')+
-        ylab(expression(T[growth] * " (" * degree * "C" * ")"))+
-        scale_fill_manual(name="Biome",
-                          limits=c("a", "b", "c", 
-                                   "d", "e", "f",
-                                   "g", "h", "i", 
-                                   "j", "k", "l",
-                                   "m", "n"),
-                          values = col.pal,
-                          labels=c("TSMBF", "FSDBF", "TSCF", 
-                                   "TBMF", "TCF", "BF", 
-                                   "TSGSS", "TGSS", "FGS",
-                                   "MGS", "T", "MFWS",
-                                   "DXS", "M"))+
-        guides(color = guide_legend(nrow=5, byrow = T))
+    ########################### plot distribution for each biome #############################
     
-    
+    ### 1st method
     ph1 <- densityplot(~ T_mean | BIOME3, data = plotDF.rev,
                 xlab = expression(T[growth] * " (" * degree * "C" * ")"),
                 layout = c(4,4), fill=col.pal)
@@ -486,6 +457,137 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
                        xlab = expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
                        layout = c(4,4), fill=col.pal)
 
+    ### 2nd method
+    ### Tgrowth
+    pha1 <- ggplot(plotDF.rev) +
+        geom_density(aes(x=T_mean, group=BIOME2, fill=BIOME2), alpha=0.2)+
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.text.x=element_text(size=12),
+              axis.title.x=element_text(size=14),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.box = 'vertical',
+              legend.box.just = 'left')+
+        xlab(expression(T[growth] * " (" * degree * "C" * ")"))+
+        scale_fill_manual(name="Biome",
+                          limits=c("a", "b", "c", 
+                                   "d", "e", "f",
+                                   "g", "h", "i", 
+                                   "j", "k", "l",
+                                   "m", "n"),
+                          values = col.pal,
+                          labels=c("TSMBF", "FSDBF", "TSCF", 
+                                   "TBMF", "TCF", "BF", 
+                                   "TSGSS", "TGSS", "FGS",
+                                   "MGS", "T", "MFWS",
+                                   "DXS", "M"))+
+        guides(color = guide_legend(nrow=5, byrow = T))
+    
+    ### Topt
+    pha2 <- ggplot(plotDF.rev) +
+        geom_density(aes(x=T_opt, group=BIOME2, fill=BIOME2), alpha=0.2)+
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.text.x=element_text(size=12),
+              axis.title.x=element_text(size=14),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.box = 'vertical',
+              legend.box.just = 'left')+
+        xlab(expression(T[opt] * " (" * degree * "C" * ")"))+
+        scale_fill_manual(name="Biome",
+                          limits=c("a", "b", "c", 
+                                   "d", "e", "f",
+                                   "g", "h", "i", 
+                                   "j", "k", "l",
+                                   "m", "n"),
+                          values = col.pal,
+                          labels=c("TSMBF", "FSDBF", "TSCF", 
+                                   "TBMF", "TCF", "BF", 
+                                   "TSGSS", "TGSS", "FGS",
+                                   "MGS", "T", "MFWS",
+                                   "DXS", "M"))+
+        guides(color = guide_legend(nrow=5, byrow = T))
+    
+    ### Tsd
+    pha3 <- ggplot(plotDF.rev) +
+        geom_density(aes(x=T_sd, group=BIOME2, fill=BIOME2), alpha=0.2)+
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.text.x=element_text(size=12),
+              axis.title.x=element_text(size=14),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.box = 'vertical',
+              legend.box.just = 'left')+
+        xlab(expression(T[growth] * " (" * degree * "C" * ")"))+
+        scale_fill_manual(name="Biome",
+                          limits=c("a", "b", "c", 
+                                   "d", "e", "f",
+                                   "g", "h", "i", 
+                                   "j", "k", "l",
+                                   "m", "n"),
+                          values = col.pal,
+                          labels=c("TSMBF", "FSDBF", "TSCF", 
+                                   "TBMF", "TCF", "BF", 
+                                   "TSGSS", "TGSS", "FGS",
+                                   "MGS", "T", "MFWS",
+                                   "DXS", "M"))+
+        guides(color = guide_legend(nrow=5, byrow = T))
+    
+    ### Tparam
+    pha4 <- ggplot(plotDF.rev) +
+        geom_density(aes(x=T_param, group=BIOME2, fill=BIOME2), alpha=0.2)+
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.text.x=element_text(size=12),
+              axis.title.x=element_text(size=14),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.box = 'vertical',
+              legend.box.just = 'left')+
+        xlab(expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))+
+        scale_fill_manual(name="Biome",
+                          limits=c("a", "b", "c", 
+                                   "d", "e", "f",
+                                   "g", "h", "i", 
+                                   "j", "k", "l",
+                                   "m", "n"),
+                          values = col.pal,
+                          labels=c("TSMBF", "FSDBF", "TSCF", 
+                                   "TBMF", "TCF", "BF", 
+                                   "TSGSS", "TGSS", "FGS",
+                                   "MGS", "T", "MFWS",
+                                   "DXS", "M"))+
+        guides(color = guide_legend(nrow=5, byrow = T))
+    
+    legend_shared <- get_legend(pha1 + theme(legend.position="bottom",
+                                           legend.box = 'vertical',
+                                           legend.box.just = 'left'))
+    
+    combined_plots <- plot_grid(pha1, pha2, pha3, pha4, 
+                                labels=c("(a)", "(b)", "(c)", "(d)"),
+                                ncol=1, align="vh", axis = "l",
+                                label_x=0.88, label_y=0.95,
+                                label_size = 18)
+    
     
     ########################### output ############################
     ### biome specific plot
@@ -505,5 +607,12 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
     plot(ph3)
     plot(ph4)
     dev.off()
+    
+    
+    ### alternative distribution plot
+    pdf(paste0(outdir, outname, "_biome_alternative_distribution_plot.pdf"), width=6, height=10)
+    plot_grid(combined_plots, legend_shared, ncol=1, rel_heights=c(1,0.1))
+    dev.off()  
+    
     
 }
