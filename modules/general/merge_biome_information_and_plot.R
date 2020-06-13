@@ -69,6 +69,23 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
     plotDF.rev$BIOME2 <- gsub("8", "h", plotDF.rev$BIOME2)
     plotDF.rev$BIOME2 <- gsub("9", "i", plotDF.rev$BIOME2)
     
+
+    plotDF.rev$BIOME3 <- as.character(plotDF.rev$BIOME2)
+    plotDF.rev$BIOME3 <- gsub("a", "TSMBF", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("b", "FSDBF", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("c", "TSCF", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("d", "TBMF", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("e", "TCF", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("f", "BF", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("g", "TSGSS", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("h", "TGSS", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("i", "FGS", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("j", "MGS", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("k", "T", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("l", "MFWS", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("m", "DXS", plotDF.rev$BIOME3)
+    plotDF.rev$BIOME3 <- gsub("n", "M", plotDF.rev$BIOME3)
+    
     require(viridis)
     col.pal <- c(viridis(10), "red", "orange", "purple", "brown")
 
@@ -422,9 +439,56 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
     
     
     ########################### plot distribution for each biome ##############################
+    ### Tgrowth
+    ph1 <- ggplot(plotDF.rev) +
+        geom_density(aes(x=T_mean, group=BIOME2, fill=BIOME2), alpha=0.2)+
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.text.x=element_text(size=12),
+              axis.title.x=element_text(size=14),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.box = 'vertical',
+              legend.box.just = 'left')+
+        ylab(expression(T[growth] * " (" * degree * "C" * ")"))+
+        scale_fill_manual(name="Biome",
+                          limits=c("a", "b", "c", 
+                                   "d", "e", "f",
+                                   "g", "h", "i", 
+                                   "j", "k", "l",
+                                   "m", "n"),
+                          values = col.pal,
+                          labels=c("TSMBF", "FSDBF", "TSCF", 
+                                   "TBMF", "TCF", "BF", 
+                                   "TSGSS", "TGSS", "FGS",
+                                   "MGS", "T", "MFWS",
+                                   "DXS", "M"))+
+        guides(color = guide_legend(nrow=5, byrow = T))
     
     
+    ph1 <- densityplot(~ T_mean | BIOME3, data = plotDF.rev,
+                xlab = expression(T[growth] * " (" * degree * "C" * ")"),
+                layout = c(4,4), fill=col.pal)
     
+    ph2 <- densityplot(~ T_opt | BIOME3, data = plotDF.rev,
+                       xlab = expression(T[opt] * " (" * degree * "C" * ")"),
+                       layout = c(4,4), fill=col.pal)
+    
+    ph3 <- densityplot(~ T_sd | BIOME3, data = plotDF.rev,
+                       xlab = expression(T[sd] * " (" * degree * "C" * ")"),
+                       layout = c(4,4), fill=col.pal)
+    
+    ph4 <- densityplot(~ T_param | BIOME3, data = plotDF.rev,
+                       xlab = expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+                       layout = c(4,4), fill=col.pal)
+
+    
+    ########################### output ############################
+    ### biome specific plot
     pdf(paste0(outdir, outname, "_biome_plot.pdf"),
         width=14, height=12)
     plot_grid(p1, p2, p3, p4,
@@ -433,5 +497,13 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
               label_size = 18)
     dev.off()
     
+    
+    #### distrubtion plot
+    pdf(paste0(outdir, outname, "_biome_distribution_plot.pdf"))
+    plot(ph1)
+    plot(ph2)
+    plot(ph3)
+    plot(ph4)
+    dev.off()
     
 }
