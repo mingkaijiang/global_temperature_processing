@@ -283,7 +283,20 @@ merge_biome_information_and_plot(plotDF = landDF6,
 
 
 ##########################################################################################
+############################## Implications - climate change #############################
+#### Placeholder for code to investigate climate change effect on the universal number
+
+
+
+
+
+######################## end implications - climate change ###############################
+##########################################################################################
+
+##########################################################################################
 ############################## Implications - plant traits ###############################
+#### Placeholder for code to investigate the implication of the universal number on plant traits
+#### Or simply their correlations
 
 
 
@@ -294,12 +307,6 @@ merge_biome_information_and_plot(plotDF = landDF6,
 ##########################################################################################
 
 
-##########################################################################################
-############################## Implications - climate change #############################
-
-
-######################## end implications - climate change ###############################
-##########################################################################################
 ### To do list:
 ### 1. add biome and make biome-specific statistical comparison
 ### 2. investigate if precipitation can explain the biome-specific statistical comparison
@@ -312,6 +319,6 @@ merge_biome_information_and_plot(plotDF = landDF6,
 ###                          5.2. Implication of this number in TBMs
 ###                          5.3. How it correlates with plant's thermal adaptation strategy/traits
 ###                          5.4. Why it's worth Nature publishing
-
+ 
 
 

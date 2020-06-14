@@ -227,8 +227,13 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
     
     
     ### Tparam
+    ## obtain inter-quantile range for each biome
+    iqr <- IQR(plotDF.rev$T_param) 
+    mean.value <- mean(plotDF.rev$T_param)
+    
+    
     p4 <- ggplot(plotDF.rev, aes(BIOME2, T_param)) +
-        geom_boxplot(aes(fill=BIOME2))+
+        geom_boxplot(aes(fill=BIOME2), outlier.size=-1)+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.text.x=element_text(size=12),
@@ -241,6 +246,7 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
               legend.position="none",
               legend.box = 'vertical',
               legend.box.just = 'left')+
+        ylim(c(mean.value-(iqr*3), mean.value+(iqr*5)))+
         ylab(expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))+
         scale_x_discrete(name="Biome", 
                          breaks=c("a", "b", "c", 
@@ -266,177 +272,6 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
                                    "MGS", "T", "MFWS",
                                    "DXS", "M"))+
         guides(fill = guide_legend(nrow=5, byrow = T))
-    
-    
-    ########################### prepare cos(lat) plot ##############################
-    #### weighted by cos(lat)
-    ### Tgrowth
-    pw1 <- ggplot(plotDF.rev, aes(BIOME2, T_mean_weighted)) +
-        geom_boxplot(aes(fill=BIOME2))+
-        theme_linedraw() +
-        theme(panel.grid.minor=element_blank(),
-              axis.text.x=element_text(size=12),
-              axis.title.x=element_text(size=14),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
-              panel.grid.major=element_blank(),
-              legend.position="none",
-              legend.box = 'vertical',
-              legend.box.just = 'left')+
-        ylab(expression(T[growth] * " (" * degree * "C" * ")" * " by cos(Lat)"))+
-        scale_x_discrete(name="Biome", 
-                         breaks=c("a", "b", "c", 
-                                  "d", "e", "f",
-                                  "g", "h", "i", 
-                                  "j", "k", "l",
-                                  "m", "n"), 
-                         labels=c("TSMBF", "FSDBF", "TSCF", 
-                                  "TBMF", "TCF", "BF", 
-                                  "TSGSS", "TGSS", "FGS",
-                                  "MGS", "T", "MFWS",
-                                  "DXS", "M"))+
-        scale_fill_manual(name="Biome",
-                          limits=c("a", "b", "c", 
-                                   "d", "e", "f",
-                                   "g", "h", "i", 
-                                   "j", "k", "l",
-                                   "m", "n"),
-                          values = col.pal,
-                          labels=c("TSMBF", "FSDBF", "TSCF", 
-                                   "TBMF", "TCF", "BF", 
-                                   "TSGSS", "TGSS", "FGS",
-                                   "MGS", "T", "MFWS",
-                                   "DXS", "M"))+
-        guides(fill = guide_legend(nrow=5, byrow = T))
-    
-    
-    ### Topt
-    pw2 <- ggplot(plotDF.rev, aes(BIOME2, T_opt_weighted)) +
-        geom_boxplot(aes(fill=BIOME2))+
-        theme_linedraw() +
-        theme(panel.grid.minor=element_blank(),
-              axis.text.x=element_text(size=12),
-              axis.title.x=element_text(size=14),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
-              panel.grid.major=element_blank(),
-              legend.position="none",
-              legend.box = 'vertical',
-              legend.box.just = 'left')+
-        ylab(expression(T[opt] * " (" * degree * "C" * ")" * " by cos(Lat)"))+
-        scale_x_discrete(name="Biome", 
-                         breaks=c("a", "b", "c", 
-                                  "d", "e", "f",
-                                  "g", "h", "i", 
-                                  "j", "k", "l",
-                                  "m", "n"), 
-                         labels=c("TSMBF", "FSDBF", "TSCF", 
-                                  "TBMF", "TCF", "BF", 
-                                  "TSGSS", "TGSS", "FGS",
-                                  "MGS", "T", "MFWS",
-                                  "DXS", "M"))+
-        scale_fill_manual(name="Biome",
-                          limits=c("a", "b", "c", 
-                                   "d", "e", "f",
-                                   "g", "h", "i", 
-                                   "j", "k", "l",
-                                   "m", "n"),
-                          values = col.pal,
-                          labels=c("TSMBF", "FSDBF", "TSCF", 
-                                   "TBMF", "TCF", "BF", 
-                                   "TSGSS", "TGSS", "FGS",
-                                   "MGS", "T", "MFWS",
-                                   "DXS", "M"))+
-        guides(fill = guide_legend(nrow=5, byrow = T))
-    
-    
-    ### Tsd
-    pw3 <- ggplot(plotDF.rev, aes(BIOME2, T_sd_weighted)) +
-        geom_boxplot(aes(fill=BIOME2))+
-        theme_linedraw() +
-        theme(panel.grid.minor=element_blank(),
-              axis.text.x=element_text(size=12),
-              axis.title.x=element_text(size=14),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
-              panel.grid.major=element_blank(),
-              legend.position="none",
-              legend.box = 'vertical',
-              legend.box.just = 'left')+
-        ylab(expression(T[sd] * " (" * degree * "C" * ")" * " by cos(Lat)"))+
-        scale_x_discrete(name="Biome", 
-                         breaks=c("a", "b", "c", 
-                                  "d", "e", "f",
-                                  "g", "h", "i", 
-                                  "j", "k", "l",
-                                  "m", "n"), 
-                         labels=c("TSMBF", "FSDBF", "TSCF", 
-                                  "TBMF", "TCF", "BF", 
-                                  "TSGSS", "TGSS", "FGS",
-                                  "MGS", "T", "MFWS",
-                                  "DXS", "M"))+
-        scale_fill_manual(name="Biome",
-                          limits=c("a", "b", "c", 
-                                   "d", "e", "f",
-                                   "g", "h", "i", 
-                                   "j", "k", "l",
-                                   "m", "n"),
-                          values = col.pal,
-                          labels=c("TSMBF", "FSDBF", "TSCF", 
-                                   "TBMF", "TCF", "BF", 
-                                   "TSGSS", "TGSS", "FGS",
-                                   "MGS", "T", "MFWS",
-                                   "DXS", "M"))+
-        guides(fill = guide_legend(nrow=5, byrow = T))
-    
-    
-    ### Tparam
-    pw4 <- ggplot(plotDF.rev, aes(BIOME2, T_param_weighted)) +
-        geom_boxplot(aes(fill=BIOME2))+
-        theme_linedraw() +
-        theme(panel.grid.minor=element_blank(),
-              axis.text.x=element_text(size=12),
-              axis.title.x=element_text(size=14),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
-              panel.grid.major=element_blank(),
-              legend.position="none",
-              legend.box = 'vertical',
-              legend.box.just = 'left')+
-        ylab(expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd] * " by cos(Lat)"))+
-        scale_x_discrete(name="Biome", 
-                         breaks=c("a", "b", "c", 
-                                  "d", "e", "f",
-                                  "g", "h", "i", 
-                                  "j", "k", "l",
-                                  "m", "n"), 
-                         labels=c("TSMBF", "FSDBF", "TSCF", 
-                                  "TBMF", "TCF", "BF", 
-                                  "TSGSS", "TGSS", "FGS",
-                                  "MGS", "T", "MFWS",
-                                  "DXS", "M"))+
-        scale_fill_manual(name="Biome",
-                          limits=c("a", "b", "c", 
-                                   "d", "e", "f",
-                                   "g", "h", "i", 
-                                   "j", "k", "l",
-                                   "m", "n"),
-                          values = col.pal,
-                          labels=c("TSMBF", "FSDBF", "TSCF", 
-                                   "TBMF", "TCF", "BF", 
-                                   "TSGSS", "TGSS", "FGS",
-                                   "MGS", "T", "MFWS",
-                                   "DXS", "M"))+
-        guides(fill = guide_legend(nrow=5, byrow = T))
-    
     
     ########################### plot distribution for each biome #############################
     
@@ -533,7 +368,7 @@ merge_biome_information_and_plot <- function(plotDF, sd.filter.option,
               legend.position="none",
               legend.box = 'vertical',
               legend.box.just = 'left')+
-        xlab(expression(T[growth] * " (" * degree * "C" * ")"))+
+        xlab(expression(T[sd] * " (" * degree * "C" * ")"))+
         scale_fill_manual(name="Biome",
                           limits=c("a", "b", "c", 
                                    "d", "e", "f",
