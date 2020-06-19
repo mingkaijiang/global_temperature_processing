@@ -334,16 +334,14 @@ prepare_figure_output(plotDF = RCP85_HadGEM2AO,
 
 
 ### To do list:
-### 2. investigate if precipitation can explain the biome-specific statistical comparison
-###    i.e. linear model, with biome and precipitation as fixed factor
-### 3. write result interpretation
-### 4. add background information to introduction
-### 5. add to-analyze list for future investigations to enrich the paper
-###    possible list include:
-###                          5.1. CMIP6 temperature to see if this universal number change
-###                          5.2. Implication of this number in TBMs
-###                          5.3. How it correlates with plant's thermal adaptation strategy/traits
-###                          5.4. Why it's worth Nature publishing
+### 1. clean code on historic calculation to speed up the process, 
+###    abd to calculate Tgrowth based on all data at 6-hourly timestep.
+### 2. Do the same for the RCP model.
+### 3. Add diurnal and seasonal calculation for the RCP model.
+### 4. Download more RCP model and write their individual code.
+### 5. Write result interpretation.
+### 6. Make figures according to journal/storyline requirements
+
  
 
 
