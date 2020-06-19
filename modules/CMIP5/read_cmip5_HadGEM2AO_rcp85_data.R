@@ -1,4 +1,4 @@
-read_cmip5_HadGEM2-AO_rcp85_data <- function() {
+read_cmip5_HadGEM2AO_rcp85_data <- function() {
     
     
     ### open nc file

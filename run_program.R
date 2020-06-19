@@ -302,7 +302,17 @@ merge_biome_information_and_plot(plotDF = landDF6,
 #### Placeholder for code to investigate the implication of the universal number on plant traits
 #### Or simply their correlations
 
-read_cmip5_access10_rcp85_data()
+### note that, when downloading data, you need to manually deleted unwanted variables
+### the WGET script generates downloading script for all possible variables
+### whereas we are only interested in tas variable
+### also, need to generate script to process data from each model
+### as different model has different structure and variable name
+
+### the WGET script needs to use command
+### chmod +x xx.sh first
+### then run with ./.sh
+
+read_cmip5_HadGEM2AO_rcp85_data()
 
 
 
@@ -313,7 +323,6 @@ read_cmip5_access10_rcp85_data()
 
 
 ### To do list:
-### 1. add biome and make biome-specific statistical comparison
 ### 2. investigate if precipitation can explain the biome-specific statistical comparison
 ###    i.e. linear model, with biome and precipitation as fixed factor
 ### 3. write result interpretation
