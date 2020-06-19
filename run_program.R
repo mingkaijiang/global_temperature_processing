@@ -315,9 +315,19 @@ merge_biome_information_and_plot(plotDF = landDF6,
 process_cmip5_HadGEM2AO_rcp85_data(sourceDir="data", 
                                    destDir="output/CMIP5")
 
+RCP85_HadGEM2AO <- prepare_inter_annual_output_rcp85_HadGEM2AO(sourceDir="output/CMIP5", 
+                                                               destDir="output/CMIP5/interannual", 
+                                                               return.option="growth")
 
-
-
+    
+plotDF = RCP85_HadGEM2AO
+sd.filter.option = "no.filter"
+outdir = "output/CMIP5/interannual/"
+outname = "RCP85_HadGEM2AO_interannual_growth"    
+prepare_figure_output(plotDF = RCP85_HadGEM2AO,
+                      sd.filter.option = "no.filter",
+                      outdir = "output/CMIP5/interannual/", 
+                      outname = "RCP85_HadGEM2AO_interannual_growth")
 
 ########################## end implications - plant traits ###############################
 ##########################################################################################
