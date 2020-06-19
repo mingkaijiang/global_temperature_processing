@@ -286,6 +286,10 @@ merge_biome_information_and_plot(plotDF = landDF6,
 ############################## Implications - climate change #############################
 #### Placeholder for code to investigate climate change effect on the universal number
 
+### Downloaded CMIP5 ACCESS1.0 r1i1p1 RCP.5 daily data 
+### in .nc format
+### convert data into format compatible with the above analysis
+### then looked at how the intra- and inter-annual universal number change
 
 
 
@@ -298,6 +302,7 @@ merge_biome_information_and_plot(plotDF = landDF6,
 #### Placeholder for code to investigate the implication of the universal number on plant traits
 #### Or simply their correlations
 
+read_cmip5_access10_rcp85_data()
 
 
 
