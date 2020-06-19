@@ -2,10 +2,10 @@ read_cmip5_HadGEM2AO_rcp85_data <- function() {
     
     
     ### open nc file
-    nc <- nc_open("data/clt_day_CMCC-CM_rcp85_r1i1p1_20060101-20061231.nc")
+    nc <- nc_open("data/tas_day_HadGEM2-AO_rcp85_r1i1p1_20060101-21001230.nc")
     
     ### get the variables
-    time <- ncvar_get(nc, "time") # day of year
+    time <- ncvar_get(nc, "time") # day since 2006-01-01
     lon <- ncvar_get(nc, "lon")
     lat <- ncvar_get(nc, "lat")
     
@@ -17,48 +17,54 @@ read_cmip5_HadGEM2AO_rcp85_data <- function() {
     ## time id
     time.id <- c(1:ntime)
     
+    ## date DF
+    dateDF <- data.frame(time.id, NA, NA, NA, NA)
+    colnames(dateDF) <- c("nday", "year", "month", "date", "yearmonth")
+    dateDF$date <- as.Date("2015-12-31") + dateDF$nday
+    dateDF$yearmonth <- substr(dateDF$date, 1, 7)
+    dateDF$year <- as.numeric(substr(dateDF$date, 1, 4))
+    dateDF$month <- as.numeric(substr(dateDF$date, 6, 7))
+    
+    ### index ID
+    yearmonth <- unique(dateDF$yearmonth)
+    group.id <- c(1:length(yearmonth))
+    idDF <- data.frame(yearmonth, group.id)
+    dateDF <- merge(dateDF, idDF, by="yearmonth")
+
     ### read in the 3d file
-    tmp_array <- ncvar_get(nc,"clt")
-    
-    ### create a lonlat file
-    lonlat <- as.matrix(expand.grid(lon,lat))
-    
-    ### use the first date and time to create a storage df
-    tmp_slice <- tmp_array[,,1]
-    tmp_vec <- as.vector(tmp_slice)
-    
-    ### make a plot to visually inspect the result
-    ### note that the latitude is not increasing, so need to reverse 
-    # image(lon,rev(lat),tmp_slice, col=rev(brewer.pal(10,"RdBu")))
-    
-    ### create the storage file
-    tmpDF <- data.frame(cbind(lonlat,tmp_vec))
-    names(tmpDF) <- c("lon","lat",paste("DOY",as.character(time.id[1]), sep="_"))
-    
-    
-    ### get a slice
-    for (i in 2: ntime) {
-        tmp_slice <- tmp_array[,,i]
-        tmp_vec <- as.vector(tmp_slice)
-        tmpDF[,(i+2)] <- tmp_vec
-    }
+    tmp_array <- ncvar_get(nc,"tas")
     
     ### close the nc
     nc_close(nc)
     
-    ### test plotting
-    plot(raster(tmp_slice))
+    ### create a lonlat file
+    lonlat <- as.data.frame(expand.grid(lon,lat))
+    colnames(lonlat) <- c("lon", "lat")
     
-    ### now summarize mean, sd, and sample size for each grid
-    tmp.matrix <- as.matrix(tmpDF[,-c(1:2)])
-    grid.mean <- rowMeans(tmp.matrix, na.rm=T)
-    grid.sd <- rowSds(tmp.matrix, na.rm=T)
-    grid.n <- ntime
+    ### create storage DF
+    tmpDF <- array(NA, c(nlon, nlat, length(group.id)))
+    tmpDF.sd <- tmpDF.n <- tmpDF
     
-    outDF <- data.frame(grid.mean, grid.sd, grid.n)
-    colnames(outDF) <- c(paste0("m_", dname),
-                         paste0("s_", dname),
-                         paste0("n_", dname))
+    ### assign value
+    for (i in group.id) {
+        ## get location information
+        loc.s <- min(dateDF$nday[dateDF$group.id == i])
+        loc.e <- max(dateDF$nday[dateDF$group.id == i])
+        ndays <- loc.e - loc.s + 1
+        
+        ## subset data based on date range
+        tmp_slice <- tmp_array[,,loc.s:loc.e]
+        
+        ## calculate mean and sd of the matrix data
+        tmpDF[,,i] <- rowMeans(tmp_slice, dim = 2)
+        tmpDF.sd[,,i] <- apply(tmp_slice, c(1,2), sd)
+        tmpDF.n[,,i] <- ndays
+    }
     
-    return(outDF)
+    ### save data
+    saveRDS(lonlat, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_lonlat.rds"))
+    saveRDS(tmpDF, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_Tmean.rds"))
+    saveRDS(tmpDF.sd, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_Tsd.rds"))
+    saveRDS(tmpDF.n, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_n.rds"))
+    
 }
