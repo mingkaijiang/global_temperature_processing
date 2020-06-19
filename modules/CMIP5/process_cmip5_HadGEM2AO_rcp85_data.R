@@ -1,8 +1,8 @@
-read_cmip5_HadGEM2AO_rcp85_data <- function() {
+process_cmip5_HadGEM2AO_rcp85_data <- function(sourceDir, destDir) {
     
     
     ### open nc file
-    nc <- nc_open("data/tas_day_HadGEM2-AO_rcp85_r1i1p1_20060101-21001230.nc")
+    nc <- nc_open(paste0(sourceDir, "/tas_day_HadGEM2-AO_rcp85_r1i1p1_20060101-21001230.nc"))
     
     ### get the variables
     time <- ncvar_get(nc, "time") # day since 2006-01-01
@@ -12,26 +12,27 @@ read_cmip5_HadGEM2AO_rcp85_data <- function() {
     ### get length
     nlon <- length(lon)
     nlat <- length(lat)
-    ntime <- length(time)
-    
-    ## time id
+    ntime <- length(time) # 95 years, each year has 360 days
     time.id <- c(1:ntime)
-    
-    ## date DF
-    dateDF <- data.frame(time.id, NA, NA, NA, NA)
-    colnames(dateDF) <- c("nday", "year", "month", "date", "yearmonth")
-    dateDF$date <- as.Date("2015-12-31") + dateDF$nday
-    dateDF$yearmonth <- substr(dateDF$date, 1, 7)
-    dateDF$year <- as.numeric(substr(dateDF$date, 1, 4))
-    dateDF$month <- as.numeric(substr(dateDF$date, 6, 7))
-    
-    ### index ID
-    yearmonth <- unique(dateDF$yearmonth)
-    group.id <- c(1:length(yearmonth))
-    idDF <- data.frame(yearmonth, group.id)
-    dateDF <- merge(dateDF, idDF, by="yearmonth")
+    yr.list <- c(2006:2100)
 
-    ### read in the 3d file
+    ## date DF
+    dateDF <- data.frame(rep(yr.list, each = 360), 
+                         rep(c(1:12), each = 30), 
+                         rep(c(1:30), 1140), 
+                         NA)
+    colnames(dateDF) <- c("year", "month", "dom", "yearmonth")
+    dateDF$yearmonth <- paste0(dateDF$year, "-", dateDF$month)
+    dateDF$nday <- time.id
+    
+    ## subset period 2060 to 2099, 40 years
+    dateDF <- subset(dateDF, year >= 2060 & year <= 2099)
+    dateDF$group <- rep(c(1:480), each = 30)
+    
+    ## generate group id
+    group.id <- unique(dateDF$group)
+    
+    ## read in the CMIP data
     tmp_array <- ncvar_get(nc,"tas")
     
     ### close the nc
@@ -43,14 +44,13 @@ read_cmip5_HadGEM2AO_rcp85_data <- function() {
     
     ### create storage DF
     tmpDF <- array(NA, c(nlon, nlat, length(group.id)))
-    tmpDF.sd <- tmpDF.n <- tmpDF
+    tmpDF.sd <- tmpDF
     
     ### assign value
     for (i in group.id) {
         ## get location information
-        loc.s <- min(dateDF$nday[dateDF$group.id == i])
-        loc.e <- max(dateDF$nday[dateDF$group.id == i])
-        ndays <- loc.e - loc.s + 1
+        loc.s <- min(dateDF$nday[dateDF$group == i])
+        loc.e <- loc.s + 30 - 1
         
         ## subset data based on date range
         tmp_slice <- tmp_array[,,loc.s:loc.e]
@@ -58,8 +58,10 @@ read_cmip5_HadGEM2AO_rcp85_data <- function() {
         ## calculate mean and sd of the matrix data
         tmpDF[,,i] <- rowMeans(tmp_slice, dim = 2)
         tmpDF.sd[,,i] <- apply(tmp_slice, c(1,2), sd)
-        tmpDF.n[,,i] <- ndays
     }
+    
+    ### sample size is always n = 30
+    lonlat$n <- 30
     
     ### save data
     saveRDS(lonlat, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_lonlat.rds"))

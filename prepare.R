@@ -15,6 +15,10 @@ if(!dir.exists("output/interannual")) {
     dir.create("output/interannual", showWarnings = FALSE)
 }
 
+if(!dir.exists("output/CMIP5")) {
+    dir.create("output/CMIP5", showWarnings = FALSE)
+}
+
 #### Install packages
 if(!require(pacman))install.packages("pacman")
 pacman::p_load(raster,

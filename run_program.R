@@ -312,7 +312,8 @@ merge_biome_information_and_plot(plotDF = landDF6,
 ### chmod +x xx.sh first
 ### then run with ./.sh
 
-read_cmip5_HadGEM2AO_rcp85_data()
+process_cmip5_HadGEM2AO_rcp85_data(sourceDir="data", 
+                                   destDir="output/CMIP5")
 
 
 
