@@ -67,6 +67,5 @@ process_cmip5_HadGEM2AO_rcp85_data <- function(sourceDir, destDir) {
     saveRDS(lonlat, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_lonlat.rds"))
     saveRDS(tmpDF, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_Tmean.rds"))
     saveRDS(tmpDF.sd, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_Tsd.rds"))
-    saveRDS(tmpDF.n, paste0(destDir, "/cmip5_rcp85_HadGEM2AO_n.rds"))
-    
+
 }
