@@ -1,6 +1,11 @@
 prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
                                                   destDir) {
     
+    ### create out directory
+    if(!dir.exists(destDir)) {
+        dir.create(destDir, showWarnings = FALSE)
+    }
+    
     ###########################################################
     #### define lon lat and time information
     dim1 <- 480
@@ -10,18 +15,18 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
     dim3 <- dayDF$e.loc[dim1]
     
     ### split sequence:
-    split.seq <- seq(40, dim1, 40)
+    split.seq <- seq(20, dim1, 20)
     out.file.group <- 1:length(split.seq)
     
     ### create storage DF
-    tmp <- array(0, c(40, dim2, dim3))
+    tmp <- array(0, c(20, dim2, dim3))
 
     ###########################################################
     ### loop through to store the data
     for (i in out.file.group) {
         
         ## lon location
-        lon.loc1 <- split.seq[i] - 39
+        lon.loc1 <- split.seq[i] - 19
         lon.loc2 <- split.seq[i] 
         
         for (j in 1:length(dname.list)) {
@@ -52,8 +57,6 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
         saveRDS(tmp, file=paste0(destDir, "/Group_", i, ".rds"))
         
     }
-    
-    
     
     
 }
