@@ -1,7 +1,7 @@
-create_storage_DF <- function() {
+create_storage_DF <- function(sourceDir) {
     
     #### read in data
-    inName <- paste0("data/era_interim_2m_temperature_6_hourly_1979_jan.nc") 
+    inName <- paste0(sourceDir,"era_interim_2m_temperature_6_hourly_1979_jan.nc") 
     
     ### open nc file
     nc <- nc_open(inName)
