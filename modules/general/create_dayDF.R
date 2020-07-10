@@ -46,5 +46,5 @@ create_dayDF <- function(sourceDir,
     write.csv(dnameDF, paste0(destDir, "/dateDF.csv"),
               row.names=F)
 
-    return(dnameDF)
+    
 }

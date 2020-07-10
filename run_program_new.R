@@ -34,9 +34,21 @@ source("prepare.R")
 #### 3. prepare annual storage DF
 #### 4. prepare sea surface mask
 
+### 1. create a date DF 
+### run once and it's done
+create_dayDF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/",
+             destDir="output")
 
+### 2. convert ERA dataset from per month per file to per region per file
 prepare_ERA_INTERIM_dataset_and_split(sourceDir="/Volumes/TOSHIBAEXT/era_interim/",
                                       destDir="output")
+
+
+### 3. calculate Tmean, Topt and Tsd for each grids, with different options
+
+### 4. Merge the caluclated temperature data, then remove sea surface area mask
+
+### 5. plot
     
 
 ### prepare annualDF to store data at annual timestep

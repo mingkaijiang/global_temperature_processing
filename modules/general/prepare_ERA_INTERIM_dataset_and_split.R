@@ -5,13 +5,12 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
     #### define lon lat and time information
     dim1 <- 480
     dim2 <- 241
-    day.list <- seq.Date(as.Date("1979/01/01"), 
-                         as.Date("2018/12/31"), 
-                         by="day")
-    dim3 <- length(day.list) * 4
+    dayDF <- read.csv("output/dateDF.csv")
+    dname.list <- as.vector(dayDF$yrmonth)
+    dim3 <- dayDF$e.loc[dim1]
     
     ### split sequence:
-    split.seq <- seq(40, 480, 40)
+    split.seq <- seq(40, dim1, 40)
     out.file.group <- 1:length(split.seq)
     
     ### create storage DF
@@ -25,9 +24,6 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
         lon.loc1 <- split.seq[i] - 39
         lon.loc2 <- split.seq[i] 
         
-        # time location
-        time.loc1 <- 1
-        
         for (j in 1:length(dname.list)) {
             
             dname <- dname.list[j]
@@ -38,19 +34,15 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
             ### open nc file
             nc <- nc_open(inName)
             
-            ### get length
-            time <- ncvar_get(nc, "time") # hours since 1900-01-01 00:00:00.0
-            ntime <- length(time)
-            time.loc2 <- time.loc1+ntime - 1
-            
             ### read in the 3d file
             tmp_array <- ncvar_get(nc,"t2m")
             
+            ### time loc
+            time.loc1 <- dayDF$s.loc[j]
+            time.loc2 <- dayDF$e.loc[j]
+            
             ### assign values
             tmp[,,time.loc1:time.loc2] <- tmp_array[lon.loc1:lon.loc2,,]
-            
-            ### update time.loc1
-            time.loc1 <- time.loc2 + 1
             
             ### close
             nc_close(nc)
