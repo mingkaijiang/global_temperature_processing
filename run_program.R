@@ -43,7 +43,8 @@ dname.list <- as.vector(dnameDF$yrmonth)
 ### call in nc file at monthly timestep,
 ### calculate monthly temperature mean, sd, and sample size
 for (j in 1:length(dname.list)) {
-    tmp.out <- prepare_monthly_output(dname=dname.list[j])
+    tmp.out <- prepare_monthly_output(sourceDir="/Volumes/TOSHIBAEXT/era_interim/",
+                                      dname=dname.list[j])
     
     ### assign monthly data onto the summary tables
     meanDF[,(j+2)] <- tmp.out[,1]

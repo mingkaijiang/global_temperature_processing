@@ -1,7 +1,7 @@
-prepare_monthly_output <- function(dname) {
+prepare_monthly_output <- function(sourceDir, dname) {
     
     #### read in data
-    inName <- paste0("data/era_interim_2m_temperature_6_hourly_", dname, ".nc") 
+    inName <- paste0(sourceDir, "era_interim_2m_temperature_6_hourly_", dname, ".nc") 
     
     ### open nc file
     nc <- nc_open(inName)
