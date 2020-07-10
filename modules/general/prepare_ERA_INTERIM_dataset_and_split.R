@@ -22,8 +22,12 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
     ### loop through to store the data
     for (i in out.file.group) {
         
+        ## lon location
         lon.loc1 <- split.seq[i] - 39
         lon.loc2 <- split.seq[i] 
+        
+        # time location
+        time.loc1 <- 1
         
         for (j in 1:length(dname.list)) {
             #### read in data
@@ -35,15 +39,20 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
             ### get length
             time <- ncvar_get(nc, "time") # hours since 1900-01-01 00:00:00.0
             ntime <- length(time)
+            time.loc2 <- time.loc1+ntime - 1
             
             ### read in the 3d file
             tmp_array <- ncvar_get(nc,"t2m")
             
             ### assign values
-            tmp[lon.loc1:lon.loc2,,time.loc1:time.loc2] <- tmp_array[,,]
+            tmp[,,time.loc1:time.loc2] <- tmp_array[lon.loc1:lon.loc2,,]
+            
+            ### update time.loc1
+            time.loc1 <- time.loc2 + 1
             
         }
         
+        ### save output
         saveRDS(tmp, file=paste0(destDir, "/Group_", i, ".rds"))
         
     }
