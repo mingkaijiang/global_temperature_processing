@@ -41,7 +41,7 @@ create_dayDF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
 
 ### 2. convert ERA dataset from per month per file to per region per file
 prepare_ERA_INTERIM_dataset_and_split(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
-                                      destDir="/Volumes/TOSHIBAEXT/era_interim/processed/output")
+                                      destDir="/Volumes/TOSHIBAEXT/era_interim/processed/")
 
 
 ### 3. calculate Tmean, Topt and Tsd for each grids, with different options

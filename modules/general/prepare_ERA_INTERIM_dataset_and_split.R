@@ -54,7 +54,7 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
         }
         
         ### save output
-        saveRDS(tmp, file=paste0(destDir, "/Group_", i, ".rds"))
+        saveRDS(tmp, file=paste0(destDir, "Group_", i, ".rds"))
         
     }
     
