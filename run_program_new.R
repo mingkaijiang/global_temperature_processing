@@ -45,8 +45,14 @@ prepare_ERA_INTERIM_dataset_and_split(sourceDir="/Volumes/TOSHIBAEXT/era_interim
 
 
 ### 3. calculate Tmean, Topt and Tsd for each grids, with different options
+calculate_gridded_temperature_parameters(sourceDir="/Volumes/TOSHIBAEXT/era_interim/processed/", 
+                                         destDir="output/splitted/",
+                                         return.option="annual")
 
 ### 4. Merge the caluclated temperature data, then remove sea surface area mask
+merge_splitted_files_and_remove_sea_surface(sourceDir"output/splitted/", 
+                                            destDir="output/merged/",
+                                            return.option="annual")
 
 ### 5. plot
     
