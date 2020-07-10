@@ -37,7 +37,8 @@ pacman::p_load(raster,
                plyr,
                raster,
                ggthemes,
-               reshape2)    
+               reshape2,
+               lubridate)    
 
 
 #### Sourcing all R files in the modules subdirectory

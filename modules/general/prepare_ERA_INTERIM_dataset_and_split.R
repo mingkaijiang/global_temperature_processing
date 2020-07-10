@@ -1,5 +1,4 @@
 prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
-                                                  dname,
                                                   destDir) {
     
     ###########################################################
@@ -7,7 +6,7 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
     dim1 <- 480
     dim2 <- 241
     day.list <- seq.Date(as.Date("1979/01/01"), 
-                         as.Date("2018/03/31"), 
+                         as.Date("2018/12/31"), 
                          by="day")
     dim3 <- length(day.list) * 4
     
@@ -30,6 +29,9 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
         time.loc1 <- 1
         
         for (j in 1:length(dname.list)) {
+            
+            dname <- dname.list[j]
+            
             #### read in data
             inName <- paste0(sourceDir, "era_interim_2m_temperature_6_hourly_", dname, ".nc") 
             
@@ -50,6 +52,8 @@ prepare_ERA_INTERIM_dataset_and_split <- function(sourceDir,
             ### update time.loc1
             time.loc1 <- time.loc2 + 1
             
+            ### close
+            nc_close(nc)
         }
         
         ### save output

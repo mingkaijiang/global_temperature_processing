@@ -34,33 +34,10 @@ source("prepare.R")
 #### 3. prepare annual storage DF
 #### 4. prepare sea surface mask
 
-#### set up the storage DF to store the means, sample size and sd,
-#### at monthly timestep
-meanDF <- create_storage_DF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/")
-sdDF <- create_storage_DF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/")
-nDF <- create_storage_DF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/")
 
-
-### create the file name list
-dnameDF <- data.frame(rep(c(1979:2018), each=12),
-                      rep(c("jan", "feb", "mar", "apr", "may", "jun",
-                            "jul", "aug", "sep", "oct", "nov", "dec"), by = 40))
-colnames(dnameDF) <- c("year", "month")
-dnameDF$yrmonth <- paste(dnameDF$year, dnameDF$month, sep="_")
-dname.list <- as.vector(dnameDF$yrmonth)
-
-
-### call in nc file at monthly timestep,
-### calculate monthly temperature mean, sd, and sample size
-for (j in 1:length(dname.list)) {
-    tmp.out <- prepare_monthly_output(sourceDir="/Volumes/TOSHIBAEXT/era_interim/",
-                                      dname=dname.list[j])
+prepare_ERA_INTERIM_dataset_and_split(sourceDir="/Volumes/TOSHIBAEXT/era_interim/",
+                                      destDir="output")
     
-    ### assign monthly data onto the summary tables
-    meanDF[,(j+2)] <- tmp.out[,1]
-    sdDF[,(j+2)] <- tmp.out[,2]
-    nDF[,(j+2)] <- tmp.out[,3]
-}
 
 ### prepare annualDF to store data at annual timestep
 annDF <- meanDF[,c(1:2)]
