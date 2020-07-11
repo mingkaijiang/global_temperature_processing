@@ -1,6 +1,11 @@
 prepare_figure_output <- function(plotDF, sd.filter.option,
                                           outdir, outname) {
     
+  ### create out directory
+  if(!dir.exists(outdir)) {
+    dir.create(outdir, showWarnings = FALSE)
+  }
+  
     ### read me
     ### sd.filter option: 
     ###                  no.filter: do not filter the SD
