@@ -26,9 +26,9 @@ source("prepare.R")
 
 #### set up the storage DF to store the means, sample size and sd,
 #### at monthly timestep
-meanDF <- create_storage_DF()
-sdDF <- create_storage_DF()
-nDF <- create_storage_DF()
+meanDF <- create_storage_DF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/")
+sdDF <- create_storage_DF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/")
+nDF <- create_storage_DF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/")
 
 
 ### create the file name list
@@ -43,7 +43,7 @@ dname.list <- as.vector(dnameDF$yrmonth)
 ### call in nc file at monthly timestep,
 ### calculate monthly temperature mean, sd, and sample size
 for (j in 1:length(dname.list)) {
-    tmp.out <- prepare_monthly_output(sourceDir="/Volumes/TOSHIBAEXT/era_interim/",
+    tmp.out <- prepare_monthly_output(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
                                       dname=dname.list[j])
     
     ### assign monthly data onto the summary tables
@@ -281,6 +281,20 @@ merge_biome_information_and_plot(plotDF = landDF6,
 
 ############################## end biome-specific patterns ###############################
 ##########################################################################################
+
+#### Make publishable figures
+
+plotDF = landDF4
+sd.filter.option = "no.filter"
+outdir = "output/intraannual/"
+outname = "intraannual_growth"
+make_paper_quality_figures(plotDF = landDF4,
+                           sd.filter.option = "no.filter",
+                           outdir = "output/publish/", 
+                           outname = "intraannual_growth")
+
+
+
 
 
 ##########################################################################################
