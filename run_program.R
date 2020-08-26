@@ -283,14 +283,37 @@ merge_biome_information_and_plot(plotDF = landDF6,
 ##########################################################################################
 
 #### Make publishable figures
-landDF4 <- prepare_intra_annual_output(meanDF, 
-                                       annDF, ssfDF, dname.list, 
-                                       return.option="growth")
+plotDF = landDF1
+sd.filter.option = "filter"
+outdir = "output/publish/"
+outname = "diurnal_annual"
+
+plotDF = landDF2
+sd.filter.option = "filter"
+outdir = "output/publish/"
+outname = "diurnal_growth"
+
+plotDF = landDF3
+sd.filter.option = "filter"
+outdir = "output/publish/"
+outname = "intraannual_annual"
 
 plotDF = landDF4
 sd.filter.option = "filter"
 outdir = "output/publish/"
 outname = "intraannual_growth"
+
+plotDF = landDF5
+sd.filter.option = "filter"
+outdir = "output/publish/"
+outname = "interannual_annual"
+
+plotDF = landDF6
+sd.filter.option = "filter"
+outdir = "output/publish/"
+outname = "interannual_growth"
+
+
 make_paper_quality_figures(plotDF = landDF4,
                            sd.filter.option = "filter",
                            outdir = "output/publish/", 
