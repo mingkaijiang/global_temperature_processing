@@ -288,11 +288,11 @@ landDF4 <- prepare_intra_annual_output(meanDF,
                                        return.option="growth")
 
 plotDF = landDF4
-sd.filter.option = "no.filter"
+sd.filter.option = "filter"
 outdir = "output/publish/"
 outname = "intraannual_growth"
 make_paper_quality_figures(plotDF = landDF4,
-                           sd.filter.option = "no.filter",
+                           sd.filter.option = "filter",
                            outdir = "output/publish/", 
                            outname = "intraannual_growth")
 
