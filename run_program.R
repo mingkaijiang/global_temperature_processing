@@ -320,7 +320,10 @@ make_paper_quality_figures(plotDF = landDF4,
                            outname = "intraannual_growth")
 
 
-
+make_paper_quality_figures_ecosystem(plotDF = landDF4,
+                                     sd.filter.option = "filter",
+                                     outdir = "output/publish/", 
+                                     outname = "intraannual_growth")
 
 
 ##########################################################################################

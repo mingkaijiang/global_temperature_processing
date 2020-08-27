@@ -1,5 +1,5 @@
-make_paper_quality_figures <- function(plotDF, sd.filter.option,
-                                      outdir, outname) {
+make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
+                                                 outdir, outname) {
     
     ### create out directory
     if(!dir.exists(outdir)) {
@@ -31,6 +31,8 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
         ### delete unreasonably small T sd
         plotDF <- plotDF[plotDF$T_sd >= 0.5, ]
         #plotDF$T_sd <- ifelse(plotDF$T_sd >= 0.5, plotDF$T_sd, 0.5)
+        
+        plotDF$T_opt <- 0.76 * plotDF$T_mean + 6.48
         
         plotDF$T_param <- with(plotDF, T_opt - T_mean) / plotDF$T_sd
         
@@ -369,7 +371,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
       guides(fill = guide_legend(nrow=5, byrow = T))
     
     
-    plot(p5)
+    #plot(p5)
     
     
     ############################ prepare density plot split into biome ##############################
@@ -409,7 +411,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
                                  "DXS"))+ # Desert
       guides(color = guide_legend(nrow=5, byrow = T))
     
-    plot(p6)
+    #plot(p6)
     
     
     ### arrange screens
@@ -420,7 +422,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
                             label_x=0.86, label_y=0.98)
     
 
-    pdf(paste0(outdir, outname, "_Figure_1.pdf"),
+    pdf(paste0(outdir, outname, "_Figure_1_ecosystem.pdf"),
         width=12, height=12)
     
     plot_grid(first_row, p3, bottom_row, nrow=3,
