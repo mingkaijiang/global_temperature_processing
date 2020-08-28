@@ -121,33 +121,57 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     xd <- data.frame(d[c("x", "y")])
     
     ### find probability distribution marks
-    probs <- c(0.1, 0.9)
+    probs <- c(0.025, 0.975)
     quantiles <- quantile(myPDF, prob=probs)
     xd$quant <- factor(findInterval(xd$x,quantiles))
     
+    p2 <- ggplot(xd, aes(x, y)) + 
+        geom_line() +
+        geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + 
+        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+                           breaks=c(0, 2.5, 5, 7.5, 10),
+                           labels=c(0, 2.5, 5, 7.5, ">10"),
+                           limits = c(-0.2, 10)) + 
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=12),
+              panel.grid.major=element_blank(),
+              legend.position = c(0.8, 0.25),
+              plot.title = element_text(size = 10, face = "bold"))+
+        scale_y_continuous(name="Density")+
+        scale_fill_manual(name = "Percentile",
+                          breaks = c("0", "1", "2"),
+                          labels = c("<2.5%", "2.5-97.5%", ">97.5"),
+                          values=c("blue2", "yellow", "red2"))
     
-    p2 <- ggplot(plotDF, aes(x=T_param)) + 
-      geom_density()+
-      scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
-                         breaks=c(0, 2.5, 5, 7.5, 10),
-                         labels=c(0, 2.5, 5, 7.5, ">10"),
-                         limits = c(-0.2, 10)) + 
-      geom_segment(aes(x = quantiles[1], xend = quantiles[1], 
-                       y = 0.0, yend = 0.32), lty=2)+
-      geom_segment(aes(x = quantiles[2], xend = quantiles[2], 
-                       y = 0.0, yend = 0.03), lty=2)+
-      theme_linedraw() +
-      theme(panel.grid.minor=element_blank(),
-            axis.title.x = element_text(size=14), 
-            axis.text.x = element_text(size=12),
-            axis.text.y=element_text(size=12),
-            axis.title.y=element_text(size=14),
-            legend.text=element_text(size=12),
-            legend.title=element_text(size=12),
-            panel.grid.major=element_blank(),
-            plot.title = element_text(size = 10, face = "bold"))+
-      scale_y_continuous(name="Density")
     
+    #p2 <- ggplot(plotDF, aes(x=T_param)) + 
+    #  geom_density()+
+    #  scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+    #                     breaks=c(0, 2.5, 5, 7.5, 10),
+    #                     labels=c(0, 2.5, 5, 7.5, ">10"),
+    #                     limits = c(-0.2, 10)) + 
+    #  geom_segment(aes(x = quantiles[1], xend = quantiles[1], 
+    #                   y = 0.0, yend = 0.32), lty=2)+
+    #  geom_segment(aes(x = quantiles[2], xend = quantiles[2], 
+    #                   y = 0.0, yend = 0.03), lty=2)+
+    #  theme_linedraw() +
+    #  theme(panel.grid.minor=element_blank(),
+    #        axis.title.x = element_text(size=14), 
+    #        axis.text.x = element_text(size=12),
+    #        axis.text.y=element_text(size=12),
+    #        axis.title.y=element_text(size=14),
+    #        legend.text=element_text(size=12),
+    #        legend.title=element_text(size=12),
+    #        panel.grid.major=element_blank(),
+    #        plot.title = element_text(size = 10, face = "bold"))+
+    #  scale_y_continuous(name="Density")
+    #
     #plot(p2)
     
     ########################### prepare map ##############################

@@ -73,7 +73,7 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
             legend.text=element_text(size=10),
             legend.title=element_text(size=10),
             panel.grid.major=element_blank(),
-            legend.position = c(0.8, 0.2),
+            legend.position = c(0.8, 0.25),
             plot.title = element_text(size = 10, face = "bold"))+
       scale_x_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))+
       scale_y_continuous(name=expression(T[opt] * " - " * T[growth] * " (" * degree * "C" * ")"))
@@ -151,10 +151,14 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
             legend.text=element_text(size=12),
             legend.title=element_text(size=12),
             panel.grid.major=element_blank(),
+            legend.position = c(0.8, 0.25),
             plot.title = element_text(size = 10, face = "bold"))+
-      scale_y_continuous(name="Density")
-    
-    plot(p2)
+      scale_y_continuous(name="Density")+
+      scale_fill_manual(name = "Percentile",
+                        breaks = c("0", "1", "2"),
+                        labels = c("<2.5%", "2.5-97.5%", ">97.5"),
+                        values=c("blue2", "yellow", "red2"))
+        
     
     #p2 <- ggplot(plotDF, aes(x=T_param)) + 
     #    geom_density()+
