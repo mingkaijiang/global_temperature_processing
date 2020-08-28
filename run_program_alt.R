@@ -94,88 +94,88 @@ landDF4 <- merge_splitted_files_and_remove_sea_surface(sourceDir="output/splitte
 ## hourly
 plotDF = landDF1
 sd.filter.option = "no.filter"
-outdir = "output/alternative/"
+outdir = "output/alternative/hourly/"
 outname = "hourly_all"
 prepare_figure_output(plotDF = landDF1,
                       sd.filter.option = "no.filter",
-                      outdir = "output/alternative/", 
+                      outdir = "output/alternative/hourly/", 
                       outname = "hourly_all")
 
 make_paper_quality_figures(plotDF = landDF1,
                            sd.filter.option = "no.filter",
-                           outdir = "output/alternative/", 
+                           outdir = "output/alternative/hourly/", 
                            outname = "hourly_all")
 
 
 make_paper_quality_figures_ecosystem(plotDF = landDF1,
                                      sd.filter.option = "no.filter",
-                                     outdir = "output/alternative/", 
+                                     outdir = "output/alternative/hourly/", 
                                      outname = "hourly_all")
 
 
 ## daily
 plotDF = landDF2
 sd.filter.option = "no.filter"
-outdir = "output/alternative/"
+outdir = "output/alternative/daily/"
 outname = "daily_all"
 prepare_figure_output(plotDF = landDF2,
                       sd.filter.option = "no.filter",
-                      outdir = "output/alternative/", 
+                      outdir = "output/alternative/daily/", 
                       outname = "daily_all")
 
 make_paper_quality_figures(plotDF = landDF2,
                            sd.filter.option = "no.filter",
-                           outdir = "output/alternative/", 
+                           outdir = "output/alternative/daily/", 
                            outname = "daily_all")
 
 
 make_paper_quality_figures_ecosystem(plotDF = landDF2,
                                      sd.filter.option = "no.filter",
-                                     outdir = "output/alternative/", 
+                                     outdir = "output/alternative/daily/", 
                                      outname = "daily_all")
 
 
 ## monthly
 plotDF = landDF3
 sd.filter.option = "no.filter"
-outdir = "output/alternative/"
+outdir = "output/alternative/monthly/"
 outname = "monthly_all"
 prepare_figure_output(plotDF = landDF3,
                       sd.filter.option = "no.filter",
-                      outdir = "output/alternative/", 
+                      outdir = "output/alternative/monthly/", 
                       outname = "monthly_all")
 
 make_paper_quality_figures(plotDF = landDF3,
                            sd.filter.option = "no.filter",
-                           outdir = "output/alternative/", 
+                           outdir = "output/alternative/monthly/", 
                            outname = "monthly_all")
 
 
 make_paper_quality_figures_ecosystem(plotDF = landDF3,
                                      sd.filter.option = "no.filter",
-                                     outdir = "output/alternative/", 
+                                     outdir = "output/alternative/monthly/", 
                                      outname = "monthly_all")
 
 
 ## annual
 plotDF = landDF4
 sd.filter.option = "no.filter"
-outdir = "output/alternative/"
+outdir = "output/alternative/annual/"
 outname = "annual_all"
 prepare_figure_output(plotDF = landDF4,
                       sd.filter.option = "no.filter",
-                      outdir = "output/alternative/", 
+                      outdir = "output/alternative/annual/", 
                       outname = "annual_all")
 
 make_paper_quality_figures(plotDF = landDF4,
                            sd.filter.option = "no.filter",
-                           outdir = "output/alternative/", 
+                           outdir = "output/alternative/annual/", 
                            outname = "annual_all")
 
 
 make_paper_quality_figures_ecosystem(plotDF = landDF4,
                                      sd.filter.option = "no.filter",
-                                     outdir = "output/alternative/", 
+                                     outdir = "output/alternative/annual/", 
                                      outname = "annual_all")
 
 ######################################## End basic code ##################################

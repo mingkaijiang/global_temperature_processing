@@ -37,6 +37,15 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     }
     
     
+    ### remove T_mean < 0
+    #plotDF$T_param <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_param)
+    #plotDF$T_sd <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_sd)
+    #plotDF$T_opt <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_opt)
+    #plotDF$T_mean <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_mean)
+    #
+    #### remove NAs
+    #plotDF <- plotDF[!is.na(plotDF$T_mean),]
+    
     
     ########################### prepare TSM ~ Tsd ##############################
     ### calculate thermal safety margin
@@ -48,7 +57,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     ### plot
     p1 <- ggplot(plotDF, aes(x=T_sd, y = TSM)) + 
       geom_hex(bins = 80) +
-      geom_abline(intercept = coef(fit1)[1], slope = coef(fit1)[2])+
+      geom_abline(intercept = coef(fit1)[1], slope = coef(fit1)[2], col="red", lwd=2)+
       scale_fill_continuous(name = "No. of grids", type = "viridis") +
       theme_linedraw() +
       theme(panel.grid.minor=element_blank(),
@@ -59,7 +68,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
             legend.text=element_text(size=10),
             legend.title=element_text(size=10),
             panel.grid.major=element_blank(),
-            legend.position = c(0.8, 0.8),
+            legend.position = c(0.8, 0.25),
             plot.title = element_text(size = 10, face = "bold"))+
       scale_x_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))+
       scale_y_continuous(name=expression(T[opt] * " - " * T[growth] * " (" * degree * "C" * ")"))
@@ -414,7 +423,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     
     ### arrange screens
     first_row <- plot_grid(p1, p2, labels = c('(a)', '(b)'), label_size = 18,
-                           label_x=0.86, label_y=0.98)
+                           label_x=c(0.12, 0.86), label_y=0.98)
     bottom_row <- plot_grid(p4, p5, labels = c("(d)", "(e)"), label_size  = 18, 
                             rel_widths = c(0.8, 1.2),
                             label_x=0.86, label_y=0.98)
@@ -425,9 +434,9 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     
     plot_grid(first_row, p3, bottom_row, nrow=3,
               ncol=1, align="v", axis = "l",
-              rel_widths = c(1, 1.5, 1),
+              rel_widths = c(1, 2.0, 1),
               rel_height = c(1, 1.5, 1),
-              label_x=0.8, label_y=0.98,
+              label_x=0.86, label_y=0.98,
               labels = c("", "(c)", ""),
               label_size = 18)
     dev.off()

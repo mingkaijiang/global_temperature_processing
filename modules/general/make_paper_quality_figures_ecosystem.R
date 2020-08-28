@@ -37,11 +37,19 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
         #plotDF$T_sd <- ifelse(plotDF$T_sd >= 0.5, plotDF$T_sd, 0.5)
         
         plotDF$T_opt <- 0.76 * plotDF$T_mean + 6.48
-        
         plotDF$T_param <- with(plotDF, T_opt - T_mean) / plotDF$T_sd
         
     }
     
+    
+    ### remove T_mean < 0
+    #plotDF$T_param <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_param)
+    #plotDF$T_sd <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_sd)
+    #plotDF$T_opt <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_opt)
+    #plotDF$T_mean <- ifelse(plotDF$T_mean <= 0, NA, plotDF$T_mean)
+    #
+    #### remove NAs
+    #plotDF <- plotDF[!is.na(plotDF$T_mean),]
     
     
     ########################### prepare TSM ~ Tsd ##############################
@@ -54,7 +62,7 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
     ### plot
     p1 <- ggplot(plotDF, aes(x=T_sd, y = TSM)) + 
       geom_hex(bins = 80) +
-      geom_abline(intercept = coef(fit1)[1], slope = coef(fit1)[2])+
+      geom_abline(intercept = coef(fit1)[1], slope = coef(fit1)[2], col="red", lwd=2)+
       scale_fill_continuous(name = "No. of grids", type = "viridis") +
       theme_linedraw() +
       theme(panel.grid.minor=element_blank(),
@@ -65,7 +73,7 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
             legend.text=element_text(size=10),
             legend.title=element_text(size=10),
             panel.grid.major=element_blank(),
-            legend.position = c(0.8, 0.8),
+            legend.position = c(0.8, 0.2),
             plot.title = element_text(size = 10, face = "bold"))+
       scale_x_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))+
       scale_y_continuous(name=expression(T[opt] * " - " * T[growth] * " (" * degree * "C" * ")"))
@@ -112,27 +120,28 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
     
     ### get the density
     myPDF <- as.vector(plotDF$T_param)
-    d <- density(myPDF)
+    d <- density(myPDF, na.rm=T)
     
     ### create data frame
     xd <- data.frame(d[c("x", "y")])
     
     ### find probability distribution marks
-    probs <- c(0.1, 0.9)
-    quantiles <- quantile(myPDF, prob=probs)
+    probs <- c(0.025, 0.975)
+    quantiles <- quantile(myPDF, prob=probs, na.rm=T)
     xd$quant <- factor(findInterval(xd$x,quantiles))
     
     
-    p2 <- ggplot(plotDF, aes(x=T_param)) + 
-      geom_density()+
+    p2 <- ggplot(xd, aes(x, y)) + 
+        geom_line() +
+        geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + 
       scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
                          breaks=c(0, 2.5, 5, 7.5, 10),
                          labels=c(0, 2.5, 5, 7.5, ">10"),
                          limits = c(-0.2, 10)) + 
-      geom_segment(aes(x = quantiles[1], xend = quantiles[1], 
-                       y = 0.0, yend = 0.32), lty=2)+
-      geom_segment(aes(x = quantiles[2], xend = quantiles[2], 
-                       y = 0.0, yend = 0.03), lty=2)+
+      #geom_segment(aes(x = quantiles[1], xend = quantiles[1], 
+      #                 y = 0.0, yend = 0.32), lty=2)+
+      #geom_segment(aes(x = quantiles[2], xend = quantiles[2], 
+      #                 y = 0.0, yend = 0.03), lty=2)+
       theme_linedraw() +
       theme(panel.grid.minor=element_blank(),
             axis.title.x = element_text(size=14), 
@@ -145,22 +154,48 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
             plot.title = element_text(size = 10, face = "bold"))+
       scale_y_continuous(name="Density")
     
+    plot(p2)
+    
+    #p2 <- ggplot(plotDF, aes(x=T_param)) + 
+    #    geom_density()+
+    #    scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+    #                       breaks=c(0, 2.5, 5, 7.5, 10),
+    #                       labels=c(0, 2.5, 5, 7.5, ">10"),
+    #                       limits = c(-0.2, 10)) + 
+    #    geom_segment(aes(x = quantiles[1], xend = quantiles[1], 
+    #                     y = 0.0, yend = 0.32), lty=2)+
+    #    geom_segment(aes(x = quantiles[2], xend = quantiles[2], 
+    #                     y = 0.0, yend = 0.03), lty=2)+
+    #    theme_linedraw() +
+    #    theme(panel.grid.minor=element_blank(),
+    #          axis.title.x = element_text(size=14), 
+    #          axis.text.x = element_text(size=12),
+    #          axis.text.y=element_text(size=12),
+    #          axis.title.y=element_text(size=14),
+    #          legend.text=element_text(size=12),
+    #          legend.title=element_text(size=12),
+    #          panel.grid.major=element_blank(),
+    #          plot.title = element_text(size = 10, face = "bold"))+
+    #    scale_y_continuous(name="Density")
+    
     #plot(p2)
     
     ########################### prepare map ##############################
     ### prepare legend for continuous scale
-    pal_continuous <- colorRampPalette(c("blue2", "green", "yellow", "purple", "red2"))
+    pal_continuous <- colorRampPalette(c("blue2", "green", 
+                                         "yellow", "purple", 
+                                         "red2"))
     
     n.discrete.color <- 5
     
     pal_discrete <- pal_continuous(n.discrete.color)
     
-    probs <- c(0, 0.025, 0.25, 0.75, 0.975, 1.0)
+    probs <- c(0.0, 0.025, 0.25, 0.75, 0.975, 1.0)
     
-    Tmean_brks <- quantile(plotDF$T_mean, prob=probs)
-    Topt_brks <- quantile(plotDF$T_opt, prob=probs)
-    Tsd_brks <- quantile(plotDF$T_sd, prob=probs)
-    Tparam_brks <- quantile(plotDF$T_param, prob=probs)
+    Tmean_brks <- quantile(plotDF$T_mean, prob=probs, na.rm=T)
+    Topt_brks <- quantile(plotDF$T_opt, prob=probs, na.rm=T)
+    Tsd_brks <- quantile(plotDF$T_sd, prob=probs, na.rm=T)
+    Tparam_brks <- quantile(plotDF$T_param, prob=probs, na.rm=T)
     
     Tmean_brks[6] <- Tmean_brks[6] + 0.1
     Topt_brks[6] <- Topt_brks[6] + 0.1
@@ -230,8 +265,7 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
       guides(fill = guide_legend(ncol = 2, byrow = TRUE))
     
     
-    #plot(p3)
-    
+
     ########################### prepare biome plot ##############################
     ### overlay biome grids with plot grids
     DF1 <- plotDF[,c("lon2", "lat")]
@@ -420,7 +454,7 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
     
     ### arrange screens
     first_row <- plot_grid(p1, p2, labels = c('(a)', '(b)'), label_size = 18,
-                           label_x=0.86, label_y=0.98)
+                           label_x=c(0.12, 0.86), label_y=0.98)
     bottom_row <- plot_grid(p4, p5, labels = c("(d)", "(e)"), label_size  = 18, 
                             rel_widths = c(0.8, 1.2),
                             label_x=0.86, label_y=0.98)
@@ -431,9 +465,9 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
     
     plot_grid(first_row, p3, bottom_row, nrow=3,
               ncol=1, align="v", axis = "l",
-              rel_widths = c(1, 1.5, 1),
+              rel_widths = c(1, 2.0, 1),
               rel_height = c(1, 1.5, 1),
-              label_x=0.8, label_y=0.98,
+              label_x=0.86, label_y=0.98,
               labels = c("", "(c)", ""),
               label_size = 18)
     dev.off()
