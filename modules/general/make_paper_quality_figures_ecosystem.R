@@ -26,6 +26,10 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
     if (sd.filter.option == "no.filter") {
         print("no filter")
         plotDF <- plotDF
+        
+        plotDF$T_opt <- 0.76 * plotDF$T_mean + 6.48
+        plotDF$T_param <- with(plotDF, T_opt - T_mean) / plotDF$T_sd
+        
     } else if (sd.filter.option == "filter") {
         print("filter by replacing Tsd < 0.5 with 0.5")
         ### delete unreasonably small T sd

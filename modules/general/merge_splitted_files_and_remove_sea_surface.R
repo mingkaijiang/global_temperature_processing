@@ -16,7 +16,7 @@ merge_splitted_files_and_remove_sea_surface <- function(sourceDir,
   for (i in 1:length(file.list)) {
     inDF <- readRDS(paste0(sourceDir, "Group_", i, "_temperature_parameters.rds"))
     
-    s <- (i -1) * 20 + 1
+    s <- (i - 1) * 20 + 1
     e <- i * 20
       
     mgDF[s:e,,] <- inDF

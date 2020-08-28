@@ -19,7 +19,7 @@ calculate_gridded_temperature_parameters <- function (sourceDir,
     ### loop through each file
     for (i in 1:length(file.list)) {
       ### read input
-      myDF <- readRDS(paste0(sourceDir, file.list[1]))
+      myDF <- readRDS(paste0(sourceDir, "Group_", i, ".rds"))
       
       ### convert unit from K to degree C
       myDF <- myDF - 273.15

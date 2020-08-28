@@ -50,6 +50,11 @@ prepare_ERA_INTERIM_dataset_and_split(sourceDir="/Volumes/TOSHIBAEXT/era_interim
 
 
 ### 3. calculate Tmean, Topt and Tsd for each grids, with different options
+### return options: hourly - based on 6 hourly data to calculate mean and sd
+###                 daily - based on daily mean to calculate mean and sd
+###                 monthly - based on monthly mean to caclulate mean and sd
+###                 annual - based on annual mean to calculate mean and sd
+### for now, don't split into all data and growth period data, but will need to come back!
 calculate_gridded_temperature_parameters(sourceDir="/Volumes/TOSHIBAEXT/era_interim/processed/", 
                                          destDir="output/splitted/",
                                          return.option="annual")
@@ -64,13 +69,21 @@ plotDF = landDF
 sd.filter.option = "no.filter"
 outdir = "output/alternative/"
 outname = "diurnal_annual"
-prepare_figure_output(plotDF = landDF1,
+prepare_figure_output(plotDF = landDF,
                       sd.filter.option = "no.filter",
                       outdir = "output/alternative/", 
                       outname = "diurnal_annual")
 
-### it seems that there is a bug somehere, because the global Tmean is not as expected. 
-### possible source of error is where we merge the files, or calculate Tmean
+make_paper_quality_figures(plotDF = landDF,
+                           sd.filter.option = "no.filter",
+                           outdir = "output/alternative/", 
+                           outname = "diurnal_annual")
+
+
+make_paper_quality_figures_ecosystem(plotDF = landDF,
+                                     sd.filter.option = "no.filter",
+                                     outdir = "output/alternative/", 
+                                     outname = "diurnal_annual")
 
 ######################################## End basic code ##################################
 ##########################################################################################
