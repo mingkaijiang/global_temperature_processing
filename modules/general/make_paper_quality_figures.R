@@ -369,7 +369,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
       guides(fill = guide_legend(nrow=5, byrow = T))
     
     
-    plot(p5)
+    #plot(p5)
     
     
     ############################ prepare density plot split into biome ##############################
@@ -409,7 +409,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
                                  "DXS"))+ # Desert
       guides(color = guide_legend(nrow=5, byrow = T))
     
-    plot(p6)
+    #plot(p6)
     
     
     ### arrange screens
