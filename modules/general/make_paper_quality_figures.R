@@ -176,23 +176,26 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     
     ########################### prepare map ##############################
     ### prepare legend for continuous scale
-    pal_continuous <- colorRampPalette(c("blue2", "green", "yellow", "purple", "red2"))
+    pal_continuous <- colorRampPalette(c("blue2", #"green", 
+                                         "yellow", #"purple", 
+                                         "red2"))
     
-    n.discrete.color <- 5
+    n.discrete.color <- 3
     
     pal_discrete <- pal_continuous(n.discrete.color)
     
-    probs <- c(0, 0.025, 0.25, 0.75, 0.975, 1.0)
+    probs <- c(0, 0.025, #0.25, 0.75, 
+               0.975, 1.0)
     
     Tmean_brks <- quantile(plotDF$T_mean, prob=probs)
     Topt_brks <- quantile(plotDF$T_opt, prob=probs)
     Tsd_brks <- quantile(plotDF$T_sd, prob=probs)
     Tparam_brks <- quantile(plotDF$T_param, prob=probs)
     
-    Tmean_brks[6] <- Tmean_brks[6] + 0.1
-    Topt_brks[6] <- Topt_brks[6] + 0.1
-    Tsd_brks[6] <- Tsd_brks[6] + 0.1
-    Tparam_brks[6] <- Tparam_brks[6] + 0.1
+    Tmean_brks[4] <- Tmean_brks[4] + 0.1
+    Topt_brks[4] <- Topt_brks[4] + 0.1
+    Tsd_brks[4] <- Tsd_brks[4] + 0.1
+    Tparam_brks[4] <- Tparam_brks[4] + 0.1
     
     plotDF$Tmean_brks <- factor(findInterval(plotDF$T_mean,Tmean_brks))
     plotDF$Topt_brks <- factor(findInterval(plotDF$T_opt,Topt_brks))
@@ -254,7 +257,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
                          breaks=c(-180, -90, 0, 90, 180))+
       scale_y_continuous(name ="Latitude", 
                          breaks=c(-65, -45, 0, 45, 90))+
-      guides(fill = guide_legend(ncol = 2, byrow = TRUE))
+      guides(fill = guide_legend(ncol = 1, byrow = TRUE))
     
     
     #plot(p3)

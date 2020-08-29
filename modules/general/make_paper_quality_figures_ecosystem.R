@@ -186,25 +186,27 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
     
     ########################### prepare map ##############################
     ### prepare legend for continuous scale
-    pal_continuous <- colorRampPalette(c("blue2", "green", 
-                                         "yellow", "purple", 
+    pal_continuous <- colorRampPalette(c("blue2", #"green", 
+                                         "yellow", #"purple", 
                                          "red2"))
     
-    n.discrete.color <- 5
+    n.discrete.color <- 3
     
     pal_discrete <- pal_continuous(n.discrete.color)
     
-    probs <- c(0.0, 0.025, 0.25, 0.75, 0.975, 1.0)
+    probs <- c(0.0, 
+               0.025, #0.25, 0.75, 
+               0.975, 1.0)
     
     Tmean_brks <- quantile(plotDF$T_mean, prob=probs, na.rm=T)
     Topt_brks <- quantile(plotDF$T_opt, prob=probs, na.rm=T)
     Tsd_brks <- quantile(plotDF$T_sd, prob=probs, na.rm=T)
     Tparam_brks <- quantile(plotDF$T_param, prob=probs, na.rm=T)
     
-    Tmean_brks[6] <- Tmean_brks[6] + 0.1
-    Topt_brks[6] <- Topt_brks[6] + 0.1
-    Tsd_brks[6] <- Tsd_brks[6] + 0.1
-    Tparam_brks[6] <- Tparam_brks[6] + 0.1
+    Tmean_brks[4] <- Tmean_brks[4] + 0.1
+    Topt_brks[4] <- Topt_brks[4] + 0.1
+    Tsd_brks[4] <- Tsd_brks[4] + 0.1
+    Tparam_brks[4] <- Tparam_brks[4] + 0.1
     
     plotDF$Tmean_brks <- factor(findInterval(plotDF$T_mean,Tmean_brks))
     plotDF$Topt_brks <- factor(findInterval(plotDF$T_opt,Topt_brks))
@@ -260,15 +262,15 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
             legend.title=element_text(size=12),
             panel.grid.major=element_blank(),
             plot.title = element_text(size = 10, face = "bold"),
-            legend.position = c(0.14, 0.2),
+            legend.position = c(0.15, 0.2),
             panel.background=element_rect(fill="white", colour="black"))+
       scale_x_continuous(name ="Longitude",
                          breaks=c(-180, -90, 0, 90, 180))+
       scale_y_continuous(name ="Latitude", 
                          breaks=c(-65, -45, 0, 45, 90))+
-      guides(fill = guide_legend(ncol = 2, byrow = TRUE))
+      guides(fill = guide_legend(ncol = 1, byrow = TRUE))
     
-    
+    #plot(p3)
 
     ########################### prepare biome plot ##############################
     ### overlay biome grids with plot grids
@@ -376,6 +378,7 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
             panel.grid.major=element_blank(),
             legend.position="none",
             legend.box = 'vertical',
+            legend.position = c(0.14, 0.2),
             legend.box.just = 'left')+
       ylim(c(0, mean.value+(iqr*5)))+
       ylab(expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))+
@@ -471,370 +474,11 @@ make_paper_quality_figures_ecosystem <- function(plotDF, sd.filter.option,
               ncol=1, align="v", axis = "l",
               rel_widths = c(1, 2.0, 1),
               rel_height = c(1, 1.5, 1),
-              label_x=0.86, label_y=0.98,
+              label_x=0.8, label_y=0.98,
               labels = c("", "(c)", ""),
               label_size = 18)
     dev.off()
         
-    
-    
-    ############################ prepare density plot ##############################
-    #### plotting
-    #pd1 <- ggplot(plotDF, aes(x=T_param)) + 
-    #    geom_density()+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=14), 
-    #          axis.text.x = element_text(size=12),
-    #          axis.text.y=element_text(size=12),
-    #          axis.title.y=element_text(size=14),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"))+
-    #    scale_x_continuous(name=expression(T[growth] * " (" * degree * "C" * ")"),
-    #                       limits=c(-0.2, 15))+
-    #    scale_y_continuous(name="Density")
-    #
-    #plot(pd1)
-    #
-    #pd2 <- ggplot(plotDF, aes(x=T_opt)) + 
-    #    geom_density(fill="grey")+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=14), 
-    #          axis.text.x = element_text(size=12),
-    #          axis.text.y=element_text(size=12),
-    #          axis.title.y=element_text(size=14),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"))+
-    #    scale_x_continuous(name=expression(T[opt] * " (" * degree * "C" * ")"))+
-    #    scale_y_continuous(name="Density")
-    #
-    #
-    #pd3 <- ggplot(plotDF, aes(x=T_sd)) + 
-    #    geom_density(fill="grey")+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=14), 
-    #          axis.text.x = element_text(size=12),
-    #          axis.text.y=element_text(size=12),
-    #          axis.title.y=element_text(size=14),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"))+
-    #    scale_x_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))+
-    #    scale_y_continuous(name="Density")
-    #
-    #
-    #
-    #
-#
-    #
-    #
-    ############################ supplementary plots ###################################
-    #
-    ############################ prepare latitudinal plot ##############################
-    #pl1 <- ggplot(latDF, aes(x=lat, y=T_mean.mean)) + 
-    #    geom_ribbon(aes(x=lat, ymin=T_mean.mean-T_mean.sd,
-    #                    ymax=T_mean.mean+T_mean.sd),
-    #                fill="grey")+
-    #    geom_line(lwd = 2) +
-    #    coord_flip()+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=14), 
-    #          axis.text.x = element_text(size=12),
-    #          axis.text.y=element_text(size=12),
-    #          axis.title.y=element_text(size=14),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"))+
-    #    scale_x_continuous("Latitude",
-    #                       breaks=c(-65, -45, 0, 45, 90))+
-    #    scale_y_continuous(name=expression(T[growth] * " (" * degree * "C" * ")"))
-    #
-    #
-    #pl2 <- ggplot(latDF, aes(x=lat, y=T_opt.mean)) + 
-    #    geom_ribbon(aes(x=lat, ymin=T_opt.mean-T_opt.sd,
-    #                    ymax=T_opt.mean+T_opt.sd),
-    #                fill="grey")+
-    #    geom_line(lwd = 2) +
-    #    coord_flip()+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=14), 
-    #          axis.text.x = element_text(size=12),
-    #          axis.text.y=element_text(size=12),
-    #          axis.title.y=element_text(size=14),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"))+
-    #    scale_x_continuous("Latitude",
-    #                       breaks=c(-65, -45, 0, 45, 90))+
-    #    scale_y_continuous(name=expression(T[opt] * " (" * degree * "C" * ")"))
-    #
-    #
-    #pl3 <- ggplot(latDF, aes(x=lat, y=T_sd.mean)) + 
-    #    geom_ribbon(aes(x=lat, ymin=T_sd.mean-T_sd.sd,
-    #                    ymax=T_sd.mean+T_sd.sd),
-    #                fill="grey")+
-    #    geom_line(lwd = 2) +
-    #    coord_flip()+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=14), 
-    #          axis.text.x = element_text(size=12),
-    #          axis.text.y=element_text(size=12),
-    #          axis.title.y=element_text(size=14),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"))+
-    #    scale_x_continuous("Latitude",
-    #                       breaks=c(-65, -45, 0, 45, 90))+
-    #    scale_y_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))
-    #
-    #
-    #
-    #
-    #
-#
-    ############################ plot map continuous scale ##############################
-    #pm1 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_mean)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_gradientn(name=expression(T[growth] * " (" * degree * "C" * ")             "),
-    #                         colours = pal_continuous(9))+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=14),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))
-    #
-    #pm2 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_opt)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_gradientn(name=expression(T[opt] * " (" * degree * "C" * ")             "), 
-    #                         colours = pal_continuous(9))+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=14),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))
-    #
-    #pm3 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_sd)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_gradientn(name=expression(T[sd] * " (" * degree * "C" * ")             "), 
-    #                         colours = pal_continuous(9))+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=14),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))
-    #
-    #
-    #pm4 <- ggplot() + 
-    #  geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_param)) +
-    #  coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #  scale_fill_gradientn(name=expression(T[opt] * " - " * T[growth]), 
-    #                       colours = pal_continuous(9))+
-    #  theme(panel.grid.minor=element_blank(),
-    #        axis.title.x = element_text(size=10), 
-    #        axis.text.x = element_text(size=10),
-    #        axis.text.y=element_text(size=10),
-    #        axis.title.y=element_text(size=10),
-    #        legend.text=element_text(size=12),
-    #        legend.title=element_text(size=14),
-    #        panel.grid.major=element_blank(),
-    #        plot.title = element_text(size = 10, face = "bold"),
-    #        legend.position="right",
-    #        panel.background=element_rect(fill="black", colour="black"))+
-    #  scale_x_continuous(name ="Longitude",
-    #                     breaks=c(-180, -90, 0, 90, 180))+
-    #  scale_y_continuous(name ="Latitude", 
-    #                     breaks=c(-65, -45, 0, 45, 90))
-    #
-    #
-    #pm5 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_param)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_gradientn(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]), 
-    #                         colours = pal_continuous(9))+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=12),
-    #          legend.title=element_text(size=14),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))
-    #
-    ############################ end map continuous scale ##############################
-#
-    #pdf(paste0(outdir, outname, "_result_continuous_scale.pdf"),
-    #    width=20, height=12)
-    #plot_grid(pm1, pd1, pl1, pd5,
-    #          pm2, pd2, pl2, pd6,
-    #          pm3, pd3, pl3, pd7,
-    #          pm4, pd4, pl4, pd8,
-    #          ncol=4, align="v", axis = "l",
-    #          rel_widths=c(1, 0.5, 0.5, 0.5),
-    #          label_x=0.86, label_y=0.98,
-    #          label_size = 18)
-    #dev.off()
-    #
-    ############################ end continuous scale ##############################
-#
-    #
-    ############################ plot map discrete scale ##############################
-    #pm5 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_mean2)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_manual(name=expression(T[growth] * " (" * degree * "C" * ")             "),
-    #                      values = pal_discrete,
-    #                      labels = Tmean_lab)+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=8),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))+
-    #    guides(fill = guide_legend(ncol = 2, byrow = TRUE))
-    #
-#
-    #pm6 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_opt2)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_manual(name=expression(T[opt] * " (" * degree * "C" * ")             "), 
-    #                         values = pal_discrete,
-    #                      labels = Topt_lab)+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=8),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))+
-    #    guides(fill = guide_legend(ncol = 2, byrow = TRUE))
-    #
-    #
-    #pm7 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_sd2)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_manual(name=expression(T[sd] * " (" * degree * "C" * ")             "), 
-    #                      values = pal_discrete,
-    #                      labels = Tsd_lab)+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=8),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))+
-    #    guides(fill = guide_legend(ncol = 2, byrow = TRUE))
-    #
-    #pm8 <- ggplot() + 
-    #    geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=T_param2)) +
-    #    coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-    #    scale_fill_manual(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]), 
-    #                      values = pal_discrete,
-    #                      labels = Tparam_lab)+
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=10), 
-    #          axis.text.x = element_text(size=10),
-    #          axis.text.y=element_text(size=10),
-    #          axis.title.y=element_text(size=10),
-    #          legend.text=element_text(size=8),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          plot.title = element_text(size = 10, face = "bold"),
-    #          legend.position="right",
-    #          panel.background=element_rect(fill="black", colour="black"))+
-    #    scale_x_continuous(name ="Longitude",
-    #                       breaks=c(-180, -90, 0, 90, 180))+
-    #    scale_y_continuous(name ="Latitude", 
-    #                       breaks=c(-65, -45, 0, 45, 90))+
-    #    guides(fill = guide_legend(ncol = 2, byrow = TRUE))
-    #
-    #
-    ############################ end map discrete scale ##############################
-    #
-    #pdf(paste0(outdir, outname, "_result_discrete_scale.pdf"),
-    #    width=18, height=12)
-    #plot_grid(pm5, pd1, pl1, 
-    #          pm6, pd2, pl2, 
-    #          pm7, pd3, pl3,
-    #          pm8, pd4, pl4, 
-    #          ncol=4, align="v", axis = "l",
-    #          rel_widths=c(1, 0.5, 0.5),
-    #          label_x=0.86, label_y=0.98,
-    #          label_size = 18)
-    #dev.off()
-    #
- 
     
     
 }
