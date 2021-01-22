@@ -36,17 +36,17 @@ source("prepare.R")
 
 ### 1. create a date DF 
 ### run once and it's done
-create_dayDF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
-             destDir="output")
+#create_dayDF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
+#             destDir="output")
 
 
 ### get lonlat information
-get_lonlatDF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
-             destDir="output")
+#get_lonlatDF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
+#             destDir="output")
 
 ### 2. convert ERA dataset from per month per file to per region per file
-prepare_ERA_INTERIM_dataset_and_split(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
-                                      destDir="/Volumes/TOSHIBAEXT/era_interim/processed/")
+#prepare_ERA_INTERIM_dataset_and_split(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
+#                                      destDir="/Volumes/TOSHIBAEXT/era_interim/processed/")
 
 
 ### 3. calculate Tmean, Topt and Tsd for each grids, with different options
