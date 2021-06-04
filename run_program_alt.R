@@ -74,6 +74,7 @@ calculate_gridded_temperature_parameters(sourceDir="/Volumes/TOSHIBAEXT/era_inte
 
 
 ### 4. Merge the caluclated temperature data, then remove sea surface area mask
+### I decided to use the 6-hourly data as main text results
 landDF1 <- merge_splitted_files_and_remove_sea_surface(sourceDir="output/splitted/hourly/", 
                                                        destDir="output/merged/hourly/",
                                                        return.option="hourly")

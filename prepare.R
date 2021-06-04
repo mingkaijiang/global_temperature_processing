@@ -35,10 +35,12 @@ pacman::p_load(raster,
                rgdal,
                maptools,
                plyr,
-               raster,
                ggthemes,
                reshape2,
-               lubridate)    
+               lubridate,
+               viridis,
+               sjstats,
+               ggpubr)    
 
 
 #### Sourcing all R files in the modules subdirectory
