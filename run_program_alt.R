@@ -182,6 +182,15 @@ make_paper_quality_figures_ecosystem(plotDF = landDF4,
 ######################################## End basic code ##################################
 ##########################################################################################
 
+plotDF = landDF1
+sd.filter.option = "no.filter"
+outdir = "output/alternative/hourly/"
+outname = "hourly_all"
+
+get_elevation_data(plotDF = landDF1,
+                   sd.filter.option = "no.filter",
+                   outdir = "output/alternative/hourly/", 
+                   outname = "hourly_all")
 
 
 ############################# end temperature calculations ###############################

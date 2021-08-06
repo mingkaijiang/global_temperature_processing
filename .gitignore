@@ -53,3 +53,4 @@ rsconnect/
 *.rds
 .Rproj.user
 *.Rproj
+*.tif
