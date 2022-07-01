@@ -206,7 +206,7 @@ plot_just_maps <- function(plotDF, sd.filter.option,
               axis = "l",
               #rel_widths = c(1, 1, 1),
               #rel_heights = c(0.8, 1.0, 0.8),
-              label_x=0.94, label_y=0.98,
+              label_x=0.9, label_y=0.98,
               labels = c("(a)", "(b)", "(c)"),
               label_size = 18)
     dev.off()
