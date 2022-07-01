@@ -41,7 +41,7 @@ source("prepare.R")
 
 
 ### get lonlat information
-#get_lonlatDF(sourceDir="/Volumes/TOSHIBAEXT/era_interim/raw/",
+#get_lonlatDF(sourceDir="/Volumes/Elements/era_interim/raw/",
 #             destDir="output")
 
 ### 2. convert ERA dataset from per month per file to per region per file
@@ -55,19 +55,19 @@ source("prepare.R")
 ###                 monthly - based on monthly mean to caclulate mean and sd
 ###                 annual - based on annual mean to calculate mean and sd
 ### for now, don't split into all data and growth period data, but will need to come back!
-calculate_gridded_temperature_parameters(sourceDir="/Volumes/TOSHIBAEXT/era_interim/processed/", 
+calculate_gridded_temperature_parameters(sourceDir="/Volumes/Elements/era_interim/processed/", 
                                          destDir="output/splitted/hourly/",
                                          return.option="hourly")
 
-calculate_gridded_temperature_parameters(sourceDir="/Volumes/TOSHIBAEXT/era_interim/processed/", 
+calculate_gridded_temperature_parameters(sourceDir="/Volumes/Elements/era_interim/processed/", 
                                          destDir="output/splitted/daily/",
                                          return.option="daily")
 
-calculate_gridded_temperature_parameters(sourceDir="/Volumes/TOSHIBAEXT/era_interim/processed/", 
+calculate_gridded_temperature_parameters(sourceDir="/Volumes/Elements/era_interim/processed/", 
                                          destDir="output/splitted/monthly/",
                                          return.option="monthly")
 
-calculate_gridded_temperature_parameters(sourceDir="/Volumes/TOSHIBAEXT/era_interim/processed/", 
+calculate_gridded_temperature_parameters(sourceDir="/Volumes/Elements/era_interim/processed/", 
                                          destDir="output/splitted/annual/",
                                          return.option="annual")
 
@@ -112,6 +112,12 @@ make_paper_quality_figures_ecosystem(plotDF = landDF1,
                                      sd.filter.option = "no.filter",
                                      outdir = "output/alternative/hourly/", 
                                      outname = "hourly_all")
+
+
+plot_just_maps(plotDF = landDF1,
+               sd.filter.option = "no.filter",
+               outdir = "output/alternative/hourly/", 
+               outname = "hourly_all")
 
 
 ## daily

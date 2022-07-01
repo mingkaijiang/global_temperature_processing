@@ -148,7 +148,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
               axis.text.x = element_text(size=12),
               axis.text.y.left=element_blank(),
               axis.text.y.right=element_text(size=12),
-              
+              plot.margin = margin(0, 0.2, 0.2, 0.2, "cm"),
               legend.text=element_text(size=12),
               legend.title=element_text(size=12),
               panel.grid.major=element_blank(),
@@ -365,7 +365,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
             plot.title = element_text(size = 10, face = "bold"),
             legend.position = c(0.1, 0.35),
             panel.background=element_rect(fill="white", colour="black"),
-            legend.background = element_rect(fill="grey",
+            legend.background = element_rect(fill=alpha("grey", 0.1),
                                              size=0.5, linetype="solid", 
                                              colour ="black"))+
       scale_x_continuous(name ="Longitude",
@@ -472,7 +472,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     
     p5 <- ggplot(plotDF.rev, aes(BIOME4, T_param)) +
         geom_jitter(aes(fill=BIOME4), pch=21, alpha=0.2)+
-        geom_boxplot(aes(fill=BIOME4), outlier.size=-1)+
+        geom_boxplot(aes(fill=BIOME4), outlier.size=-1, color="black")+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.text.x=element_text(size=12),
@@ -669,5 +669,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
               labels = c("", "", "(f)"),
               label_size = 18)
     dev.off()
+    
+    
 }
 
