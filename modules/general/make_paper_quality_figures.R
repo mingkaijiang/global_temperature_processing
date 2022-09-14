@@ -71,8 +71,9 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
               panel.grid.major=element_blank(),
               legend.position = c(0.85, 0.25),
               plot.title = element_text(size = 10, face = "bold"))+
-        scale_x_continuous(name=expression(T[sd] * " (" * degree * "C" * ")"))+
-        scale_y_continuous(name=expression(T[opt] * " - " * T[growth] * " (" * degree * "C" * ")"))
+        scale_x_continuous(name=expression("TSD (" * degree * "C" * ")"))+
+        scale_y_continuous(name=expression(italic("T")[optA] * " - " * 
+                                             italic("T")[growth] * " (" * degree * "C" * ")"))
     
     
     pdf(paste0(outdir, outname, "_hex_plot.pdf"),
@@ -131,7 +132,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
         scale_x_continuous("Latitude",
                            breaks=c(-90, -45, 0, 45, 90),
                            limits = c(-55, 90))+
-        scale_y_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+        scale_y_continuous(name=expression("(" * italic("T")[optA] * " - " * italic("T")[growth] * ")/TSD"),
                            limits = c(0, 3.5))
     
     
@@ -157,7 +158,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
                            breaks=c(-90, -45, 0, 45, 90),
                            limits = c(-55, 90),
                            sec.axis = dup_axis())+
-        scale_y_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+        scale_y_continuous(name=expression("(" * italic("T")[optA] * " - " * italic("T")[growth] * ")/TSD"),
                            limits = c(0, 3.5))
     
 
@@ -195,7 +196,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
               plot.title = element_text(size = 10, face = "bold"))+
         scale_x_continuous("Longitude",
                            breaks=c(-180, -90, 0, 90, 180))+
-        scale_y_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+        scale_y_continuous(name=expression("(" * italic("T")[optA] * " - " * italic("T")[growth] * ")/TSD"),
                            limits = c(0, 3.0))
     
     
@@ -219,7 +220,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
         scale_x_continuous("Longitude",
                            breaks=c(-180, -90, 0, 90, 180),
                            sec.axis = dup_axis())+
-        scale_y_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+        scale_y_continuous(name=expression("(" * italic("T")[optA] * " - " * italic("T")[growth] * ")/TSD"),
                            limits = c(0, 3.0))
     
     
@@ -263,7 +264,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     p2 <- ggplot(xd, aes(x, y)) + 
         geom_line() +
         geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + 
-        scale_x_continuous(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]),
+        scale_x_continuous(name=expression("(" * italic("T")[optA] * " - " * italic("T")[growth] * ")/TSD"),
                            breaks=c(0, 1, 2, 3),
                            labels=c(0, 1, 2, 3),
                            limits = c(-0.2, 3.5)) + 
@@ -350,7 +351,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
     p3 <- ggplot() + 
       geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=Tparam_brks)) +
       coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-      scale_fill_manual(name=expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]), 
+      scale_fill_manual(name=expression("(" * italic("T")[optA] * " - " * italic("T")[growth] * ")/TSD"), 
                         values = col_discrete,
                         labels = Tparam_lab)+
       borders(col=alpha("black", 0.8), lwd=0.1)+
@@ -486,7 +487,7 @@ make_paper_quality_figures <- function(plotDF, sd.filter.option,
               legend.box = 'vertical',
               legend.box.just = 'left')+
         ylim(c(0, mean.value+(iqr*5)))+
-        ylab(expression("(" * T[opt] * " - " * T[growth] * ")/" * T[sd]))+
+        ylab(expression("(" * italic("T")[optA] * " - " * italic("T")[growth] * ")/TSD"))+
         scale_x_discrete(name="Biome", 
                          breaks=c("a", "b", "c", 
                                   "d", "e", "f",

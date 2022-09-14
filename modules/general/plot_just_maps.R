@@ -104,12 +104,13 @@ plot_just_maps <- function(plotDF, sd.filter.option,
     Tparam_lab <- gsub("]", "", Tparam_lab)
     Tparam_lab <- sub('.', '', Tparam_lab)
     
+    col_discrete <- brewer.pal(7, "RdYlBu") 
     
     
     p1 <- ggplot() + 
         geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=Tmean_brks)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[growth]), 
+        scale_fill_manual(name=expression(italic("T")[growth]), 
                           values = col_discrete,
                           labels = Tmean_lab)+
         borders(col=alpha("black", 0.8), lwd=0.1)+
@@ -139,7 +140,7 @@ plot_just_maps <- function(plotDF, sd.filter.option,
     p2 <- ggplot() + 
         geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=Topt_brks)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[opt]), 
+        scale_fill_manual(name=expression(italic("T")[opt]), 
                           values = col_discrete,
                           labels = Topt_lab)+
         borders(col=alpha("black", 0.8), lwd=0.1)+
@@ -171,7 +172,7 @@ plot_just_maps <- function(plotDF, sd.filter.option,
     p3 <- ggplot() + 
         geom_tile(data=plotDF, aes(y=lat, x=lon2, fill=Tsd_brks)) +
         coord_quickmap(xlim=range(plotDF$lon2), ylim=range(plotDF$lat))+
-        scale_fill_manual(name=expression(T[sd]), 
+        scale_fill_manual(name=expression("TSD"), 
                           values = col_discrete,
                           labels = Tsd_lab)+
         borders(col=alpha("black", 0.8), lwd=0.1)+
